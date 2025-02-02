@@ -25,7 +25,6 @@ const Authenticate = () => {
 
     try {
       const res = await authenticate({ email, emailToken: code });
-
       updateAuthToken(res.authToken);
     } catch (error: any) {
       Alert.alert("Error: ", error.message);

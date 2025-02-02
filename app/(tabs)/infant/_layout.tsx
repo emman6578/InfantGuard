@@ -1,7 +1,7 @@
-import { Stack } from "expo-router";
+import { Link, router, Stack } from "expo-router";
 import React from "react";
 
-export default function AuthLayout() {
+export default function InfantLayout() {
   return (
     <Stack
       screenOptions={{

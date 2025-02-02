@@ -40,7 +40,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     const isAuthGroup = segments[0] === "(auth)";
     if (!authToken && !isAuthGroup) {
-      router.replace("/login");
+      router.replace("/landingPage");
     }
     if (authToken && isAuthGroup) {
       router.replace("/");

@@ -17,13 +17,13 @@ const Login = () => {
   const router = useRouter();
 
   const onLogin = async () => {
-    console.log("Pressed");
+    console.log("Login Button Pressed");
 
     try {
       await login({ email });
       router.push({ pathname: "/authenticate", params: { email } });
     } catch (error: any) {
-      Alert.alert(error.message);
+      Alert.alert("Error: " + error.message);
     }
   };
 
@@ -31,7 +31,7 @@ const Login = () => {
     <View style={styles.container}>
       <Stack screenOptions={{ title: "Login" }} />
       <View style={styles.containerSignIn}>
-        <Text style={styles.label}>Sign in or create an account</Text>
+        <Text style={styles.label}>Login now!</Text>
 
         <TextInput
           placeholder="Email"

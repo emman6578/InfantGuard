@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-export default function Babies() {
+export default function Articles() {
   return (
     <View
       style={{
@@ -9,7 +9,7 @@ export default function Babies() {
         alignItems: "center",
       }}
     >
-      <Text>babies page</Text>
+      <Text>Vaccination Articles Page</Text>
     </View>
   );
 }
