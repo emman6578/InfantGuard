@@ -37,7 +37,7 @@ yarn-error.*
 
 app-example
 infantguardnotif-firebase-adminsdk-fbsvc-8003150ff9.json
-google-services.json
+# google-services.json
 
 /android
 /ios
