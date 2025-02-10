@@ -5,11 +5,12 @@ import {
   Alert,
   Text,
   View,
+  Image,
+  ScrollView,
 } from "react-native";
-
 import React, { useState } from "react";
-
 import { Stack, useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 import { register } from "@/libraries/API/auth/auth";
 
 const Register = () => {
@@ -24,8 +25,6 @@ const Register = () => {
   const [province, setProvince] = useState("");
 
   const onRegister = async () => {
-    console.log("Login Button Pressed");
-
     try {
       await register({
         fullname,
@@ -41,13 +40,22 @@ const Register = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Stack screenOptions={{ title: "Login" }} />
-      <View style={styles.containerSignIn}>
-        <Text style={styles.label}>Register an account...</Text>
+    <LinearGradient colors={["#ffffff", "#f7fdff"]} style={styles.container}>
+      <Stack screenOptions={{ title: "Register" }} />
+      <ScrollView contentContainerStyle={styles.content}>
+        <Image
+          source={require("../../public/app-logo.jpeg")}
+          style={styles.logo}
+        />
+
+        <Text style={styles.title}>Create an Account</Text>
+        <Text style={styles.subtitle}>
+          Register to manage your child's vaccination schedule
+        </Text>
 
         <TextInput
           placeholder="Fullname"
+          placeholderTextColor="#94a3b8"
           value={fullname}
           onChangeText={setFullname}
           style={styles.input}
@@ -55,24 +63,26 @@ const Register = () => {
 
         <TextInput
           placeholder="Email"
+          placeholderTextColor="#94a3b8"
           value={email}
           onChangeText={setEmail}
           style={styles.input}
+          autoCapitalize="none"
+          keyboardType="email-address"
         />
 
         <TextInput
           placeholder="Valid Contact Number"
+          placeholderTextColor="#94a3b8"
           value={contact_number}
           onChangeText={setContact_number}
           style={styles.input}
+          keyboardType="phone-pad"
         />
-
-        <View>
-          <Text>Address:</Text>
-        </View>
 
         <TextInput
           placeholder="Purok"
+          placeholderTextColor="#94a3b8"
           value={purok}
           onChangeText={setPurok}
           style={styles.input}
@@ -80,6 +90,7 @@ const Register = () => {
 
         <TextInput
           placeholder="Baranggay"
+          placeholderTextColor="#94a3b8"
           value={baranggay}
           onChangeText={setBaranggay}
           style={styles.input}
@@ -87,6 +98,7 @@ const Register = () => {
 
         <TextInput
           placeholder="Municipality"
+          placeholderTextColor="#94a3b8"
           value={municipality}
           onChangeText={setMunicipality}
           style={styles.input}
@@ -94,54 +106,97 @@ const Register = () => {
 
         <TextInput
           placeholder="Province"
+          placeholderTextColor="#94a3b8"
           value={province}
           onChangeText={setProvince}
           style={styles.input}
         />
 
-        <Pressable style={styles.button} onPress={onRegister}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            pressed && styles.buttonPressed,
+          ]}
+          onPress={onRegister}
+        >
           <Text style={styles.buttonText}>Register</Text>
         </Pressable>
-      </View>
-    </View>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 24,
   },
-  containerSignIn: { backgroundColor: "white", padding: 10, borderRadius: 15 },
-  label: {
-    color: "black",
-    fontSize: 24,
-    marginVertical: 5,
-  },
-  error: {
-    marginVertical: 5,
-    color: "red",
-  },
-  input: {
-    borderColor: "gray",
-    borderWidth: StyleSheet.hairlineWidth,
-    padding: 10,
-    fontSize: 20,
-    marginVertical: 5,
-    borderRadius: 10,
-  },
-  button: {
-    backgroundColor: "#050A12",
-    height: 50,
+  content: {
+    paddingHorizontal: 32,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 10,
-    marginVertical: 5,
+    paddingVertical: 40,
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    borderRadius: 16,
+    marginBottom: 32,
+    backgroundColor: "#e3f2fd", // Fallback color
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: "700",
+    color: "#1a365d",
+    marginBottom: 8,
+    fontFamily: "Inter_700Bold",
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#4a5568",
+    textAlign: "center",
+    marginBottom: 40,
+    paddingHorizontal: 20,
+    lineHeight: 24,
+  },
+  input: {
+    width: "100%",
+    height: 56,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    color: "#1a365d",
+    backgroundColor: "white",
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  button: {
+    width: "100%",
+    height: 56,
+    backgroundColor: "#3b82f6",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    marginBottom: 16,
+  },
+  buttonPressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
   },
   buttonText: {
     color: "white",
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
 

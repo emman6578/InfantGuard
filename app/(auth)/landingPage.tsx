@@ -1,39 +1,58 @@
 import React from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Text, Pressable, StyleSheet, Image } from "react-native";
 import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
 const LandingPage = () => {
   const router = useRouter();
 
-  const onLoginPress = () => {
-    router.push("/login");
-  };
-
-  const onRegisterPress = () => {
-    router.push("/register");
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Our App</Text>
-      <Text style={styles.subtitle}>Your gateway to an amazing experience</Text>
+    <LinearGradient colors={["#ffffff", "#f7fdff"]} style={styles.container}>
+      <View style={styles.content}>
+        {/* Logo Section */}
+        <Image
+          source={require("../../public/app-logo.jpeg")}
+          style={styles.logo}
+        />
 
-      <View style={styles.buttonContainer}>
-        <Pressable
-          style={[styles.button, styles.loginButton]}
-          onPress={onLoginPress}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </Pressable>
+        {/* Hero Text */}
+        <Text style={styles.title}>Safeguarding Your Little One's Future</Text>
+        <Text style={styles.subtitle}>
+          Track immunizations, receive reminders, and ensure your baby's health
+          journey stays on schedule with our intuitive platform.
+        </Text>
 
-        <Pressable
-          style={[styles.button, styles.registerButton]}
-          onPress={onRegisterPress}
-        >
-          <Text style={styles.buttonText}>Register</Text>
-        </Pressable>
+        {/* Action Buttons */}
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.button,
+              styles.primaryButton,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={() => router.push("/login")}
+          >
+            <Text style={styles.buttonTextPrimary}>Get Started</Text>
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.button,
+              styles.secondaryButton,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={() => router.push("/register")}
+          >
+            <Text style={styles.buttonTextSecondary}>Create Account</Text>
+          </Pressable>
+        </View>
+
+        {/* Additional Info */}
+        <Text style={styles.securityText}>
+          🔒 Protected and Secured OTP (One-Time-Password)
+        </Text>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -41,47 +60,78 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+  },
+  content: {
+    paddingHorizontal: 32,
     alignItems: "center",
-    padding: 20,
-    backgroundColor: "#f9f9f9",
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    borderRadius: 24,
+    marginBottom: 40,
+    backgroundColor: "#e3f2fd", // Fallback color
   },
   title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#050A12",
-    marginBottom: 10,
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#1a365d",
     textAlign: "center",
+    lineHeight: 34,
+    marginBottom: 16,
+    fontFamily: "Inter_700Bold", // Use your preferred font family
   },
   subtitle: {
-    fontSize: 18,
-    color: "gray",
-    marginBottom: 30,
+    fontSize: 16,
+    color: "#4a5568",
     textAlign: "center",
+    lineHeight: 24,
+    marginBottom: 40,
+    paddingHorizontal: 20,
   },
   buttonContainer: {
-    flexDirection: "row",
-    gap: 10,
+    width: "100%",
+    gap: 12,
   },
   button: {
-    flex: 1,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    width: "100%",
+    paddingVertical: 16,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  loginButton: {
-    backgroundColor: "#4CAF50", // Green for Login
-    marginRight: 10,
+  primaryButton: {
+    backgroundColor: "#3b82f6",
   },
-  registerButton: {
-    backgroundColor: "#007BFF", // Blue for Register
-    marginLeft: 10,
+  secondaryButton: {
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
   },
-  buttonText: {
+  buttonPressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.9,
+  },
+  buttonTextPrimary: {
     color: "white",
-    fontWeight: "bold",
+    fontWeight: "600",
     fontSize: 16,
+  },
+  buttonTextSecondary: {
+    color: "#1e40af",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  securityText: {
+    marginTop: 32,
+    color: "#718096",
+    fontSize: 12,
+    letterSpacing: 0.4,
   },
 });
 

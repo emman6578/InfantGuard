@@ -52,8 +52,10 @@ export default function Index() {
     <>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.logo}>Logo</Text>
-
+        <Image
+          source={require("../../../public/app-logo.jpeg")}
+          style={styles.logoImg}
+        />
         <View style={styles.headerIcons}>
           <TouchableOpacity style={styles.iconButton} onPress={handlePressAdd}>
             <Feather name="user-plus" size={20} color="black" />
@@ -268,5 +270,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#ccc",
     marginVertical: 10,
     width: "100%",
+  },
+  logoImg: {
+    width: 70,
+    height: 70,
   },
 });

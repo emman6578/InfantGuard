@@ -16,11 +16,7 @@ import { router } from "expo-router";
 import CircularProgressBar from "./CustomCircularBar";
 import VaccineProgressModal from "../modal/vaccine-progress-modal";
 
-const InfantVaccineProgress = ({
-  vaccineProgress,
-  id,
-  vaccineSchedule,
-}: any) => {
+const InfantVaccineProgress = ({ vaccineProgress }: any) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedVaccine, setSelectedVaccine] = useState<any>(null); // Store selected vaccine details
 
@@ -35,7 +31,6 @@ const InfantVaccineProgress = ({
       {vaccineProgress[0].Vaccination_Schedule[0]?.Vaccination.length > 0 ? (
         vaccineProgress.map((vaccine: any) => (
           <View key={vaccine.id} style={styles.vaccineItem1}>
-            <Text> {vaccine.id}</Text>
             <Pressable
               onPress={() => handleVaccinePress(vaccine)} // Open modal when pressed
               style={({ pressed }) => [

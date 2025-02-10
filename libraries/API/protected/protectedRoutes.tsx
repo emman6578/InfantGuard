@@ -30,11 +30,6 @@ interface ProtectedRoutesType {
     family_no: number
   ) => Promise<any>;
   UploadChildProfileImage: (id: string, imageUri: string) => Promise<any>;
-  UpdateVaccineProgress: (
-    id: string,
-    doseType: string,
-    status: string
-  ) => Promise<any>;
   storeNotification: (
     title: string,
     body: string,
@@ -363,41 +358,6 @@ export const ProtectedRoutesContextProvider = ({
     }
   };
 
-  const UpdateVaccineProgress = async (
-    id: string,
-    doseType: string,
-    status: string
-  ) => {
-    const data = {
-      id,
-      doseType,
-      status,
-    };
-    const res = await fetch(`${API_URL}/parent/update-progress`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!res.ok) {
-      // Check if response is not OK (status code not in range 200-299)
-      let errorMessage = "Failed to update vaccine progress";
-      const responseBody = await res.json(); // Attempt to parse response body as JSON
-
-      // Check if response body has an error message from the backend
-      if (responseBody && responseBody.message) {
-        errorMessage = responseBody.message;
-      }
-
-      throw new Error(errorMessage);
-    }
-
-    return await res.json();
-  };
-
   const storeNotification = async (
     title: string,
     body: string,
@@ -500,7 +460,6 @@ export const ProtectedRoutesContextProvider = ({
         CreateVaccineProgress,
         CreateChildInfo,
         UploadChildProfileImage,
-        UpdateVaccineProgress,
         storeNotification,
         getNotification,
         updatePushTokenUser,

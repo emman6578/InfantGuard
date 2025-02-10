@@ -1,5 +1,3 @@
-import { useProtectedRoutesApi } from "@/libraries/API/protected/protectedRoutes";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import {
   Keyboard,
@@ -8,45 +6,22 @@ import {
   TouchableWithoutFeedback,
   View,
   Text,
-  TouchableOpacity,
   Pressable,
-  Alert,
 } from "react-native";
-
-//TODO: REMOVE THE UPDATE BUTTON
 
 const VaccineProgressModal = ({
   selectedVaccine,
   modalVisible,
   setModalVisible,
 }: any) => {
-  const { UpdateVaccineProgress } = useProtectedRoutesApi();
-  const queryClient = useQueryClient();
-
-  const updateMutation = useMutation({
-    mutationFn: ({
-      id,
-      doseType,
-      status,
-    }: {
-      id: string;
-      doseType: string;
-      status: string;
-    }) => UpdateVaccineProgress(id, doseType, status),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["progress"] });
-      queryClient.invalidateQueries({ queryKey: ["percentage"] });
-    },
-    onError: (error: any) => {
-      Alert.alert(
-        "Error",
-        error.message || "Failed to update vaccine progress."
-      );
-    },
-  });
-
-  const handleUpdate = (id: string, doseType: string, status: string) => {
-    updateMutation.mutate({ id, doseType, status });
+  // This helper converts an ISO date string to a friendly format.
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 
   return (
@@ -63,103 +38,45 @@ const VaccineProgressModal = ({
               <View>
                 <Text style={styles.modalTitle}>Vaccine Progress Details</Text>
                 {selectedVaccine.Vaccination_Schedule.map((schedule: any) => {
-                  const firstDose =
-                    schedule.firstDose &&
-                    schedule.Vaccination[0]?.firstDoseStatus &&
-                    schedule.firstDose !== "N/A" &&
-                    schedule.Vaccination[0]?.firstDoseStatus !== "N/A";
-
-                  const secondDose =
-                    schedule.secondDose &&
-                    schedule.Vaccination[0]?.secondDoseStatus &&
-                    schedule.secondDose !== "N/A" &&
-                    schedule.Vaccination[0]?.secondDoseStatus !== "N/A";
-
-                  const thirdDose =
-                    schedule.thirdDose &&
-                    schedule.Vaccination[0]?.thirdDoseStatus &&
-                    schedule.thirdDose !== "N/A" &&
-                    schedule.Vaccination[0]?.thirdDoseStatus !== "N/A";
-
                   return (
                     <View key={schedule.id} style={styles.scheduleItem}>
-                      {firstDose && (
-                        <View style={styles.doseContainer}>
-                          {schedule.Vaccination[0]?.firstDoseStatus ===
-                            "NOT_DONE" && (
-                            <TouchableOpacity
-                              style={styles.updateButton}
-                              onPress={() => {
-                                handleUpdate(
-                                  selectedVaccine.id,
-                                  "firstDoseStatus",
-                                  "DONE"
-                                );
-                                setModalVisible(false);
-                              }}
-                            >
-                              <Text>Update</Text>
-                            </TouchableOpacity>
-                          )}
-                          <Text style={styles.info}>
-                            First Dose: {schedule.firstDose} (
-                            {schedule.Vaccination[0]?.firstDoseStatus})
-                          </Text>
-                        </View>
-                      )}
+                      {/* Only show First Dose if updated dose info and remark exist */}
+                      {schedule.UpdateFirstDose &&
+                        schedule.remark_FirstDose && (
+                          <View style={styles.doseContainer}>
+                            <Text style={styles.info}>
+                              First Dose (Updated):{" "}
+                              {formatDate(schedule.UpdateFirstDose)} (Remark:{" "}
+                              {schedule.remark_FirstDose})
+                            </Text>
+                          </View>
+                        )}
 
-                      {secondDose && (
-                        <View style={styles.doseContainer}>
-                          {/* Only show update button if first dose is Done */}
-                          {schedule.Vaccination[0]?.secondDoseStatus ===
-                            "NOT_DONE" && (
-                            <TouchableOpacity
-                              style={styles.updateButton}
-                              onPress={() => {
-                                handleUpdate(
-                                  selectedVaccine.id,
-                                  "secondDoseStatus",
-                                  "DONE"
-                                );
-                                setModalVisible(false);
-                              }}
-                            >
-                              <Text>Update</Text>
-                            </TouchableOpacity>
-                          )}
-                          <Text style={styles.info}>
-                            Second Dose: {schedule.secondDose} (
-                            {schedule.Vaccination[0]?.secondDoseStatus})
-                          </Text>
-                        </View>
-                      )}
+                      {/* Only show Second Dose if updated dose info and remark exist */}
+                      {schedule.UpdateSecondDose &&
+                        schedule.remark_SecondDose && (
+                          <View style={styles.doseContainer}>
+                            <Text style={styles.info}>
+                              Second Dose (Updated):{" "}
+                              {formatDate(schedule.UpdateSecondDose)} (Remark:{" "}
+                              {schedule.remark_SecondDose})
+                            </Text>
+                          </View>
+                        )}
 
-                      {thirdDose && (
-                        <View style={styles.doseContainer}>
-                          {/* Only show update button if second dose is Done */}
-                          {schedule.Vaccination[0]?.thirdDoseStatus ===
-                            "NOT_DONE" && (
-                            <TouchableOpacity
-                              style={styles.updateButton}
-                              onPress={() => {
-                                handleUpdate(
-                                  selectedVaccine.id,
-                                  "thirdDoseStatus",
-                                  "DONE"
-                                );
-                                setModalVisible(false);
-                              }}
-                            >
-                              <Text>Update</Text>
-                            </TouchableOpacity>
-                          )}
-                          <Text style={styles.info}>
-                            Third Dose: {schedule.thirdDose} (
-                            {schedule.Vaccination[0]?.thirdDoseStatus})
-                          </Text>
-                        </View>
-                      )}
+                      {/* Only show Third Dose if updated dose info and remark exist */}
+                      {schedule.UpdateThirdDose &&
+                        schedule.remark_ThirdDose && (
+                          <View style={styles.doseContainer}>
+                            <Text style={styles.info}>
+                              Third Dose (Updated):{" "}
+                              {formatDate(schedule.UpdateThirdDose)} (Remark:{" "}
+                              {schedule.remark_ThirdDose})
+                            </Text>
+                          </View>
+                        )}
 
+                      {/* Always show the progress information */}
                       <Text style={styles.info}>
                         Progress: {schedule.Vaccination[0]?.percentage || 0}%
                       </Text>

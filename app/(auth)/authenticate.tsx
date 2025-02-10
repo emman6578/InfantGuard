@@ -5,89 +5,141 @@ import {
   Pressable,
   StyleSheet,
   Alert,
+  Image,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 import { authenticate } from "@/libraries/API/auth/auth";
 import { useAuth } from "@/Context/AuthContext";
 
 const Authenticate = () => {
   const [code, setCode] = useState("");
   const { email } = useLocalSearchParams();
-
   const { updateAuthToken } = useAuth();
+  const router = useRouter();
 
   const onConfirm = async () => {
-    console.log("Confirmed: ", email, code);
-    if (typeof email !== "string") {
-      return;
-    }
+    if (typeof email !== "string") return;
 
     try {
       const res = await authenticate({ email, emailToken: code });
       updateAuthToken(res.authToken);
+      // Optionally, navigate to your landing/main screen after successful authentication
+      router.push("/landingPage");
     } catch (error: any) {
-      Alert.alert("Error: ", error.message);
+      Alert.alert("Error", error.message);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={["#ffffff", "#f7fdff"]} style={styles.container}>
       <Stack screenOptions={{ title: "Confirm" }} />
-      <View style={styles.containerSignIn}>
-        <Text style={styles.label}>Confirm with code</Text>
-
+      <ScrollView contentContainerStyle={styles.content}>
+        <Image
+          source={require("../../public/app-logo.jpeg")}
+          style={styles.logo}
+        />
+        <Text style={styles.title}>Confirm Your Account</Text>
+        <Text style={styles.subtitle}>
+          Enter the code sent to{" "}
+          <Text style={{ fontWeight: "600" }}>{email}</Text> to confirm your
+          account.
+        </Text>
         <TextInput
-          placeholder="Code"
+          placeholder="Enter Code"
+          placeholderTextColor="#94a3b8"
           value={code}
           onChangeText={setCode}
           style={styles.input}
           keyboardType="numeric"
         />
-
-        <Pressable style={styles.button} onPress={onConfirm}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            pressed && styles.buttonPressed,
+          ]}
+          onPress={onConfirm}
+        >
           <Text style={styles.buttonText}>Confirm</Text>
         </Pressable>
-      </View>
-    </View>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 24,
   },
-  containerSignIn: { backgroundColor: "white", padding: 10, borderRadius: 15 },
-  label: {
-    color: "black",
-    fontSize: 24,
-    marginVertical: 5,
-  },
-  error: {
-    marginVertical: 5,
-    color: "red",
-  },
-  input: {
-    borderColor: "gray",
-    borderWidth: StyleSheet.hairlineWidth,
-    padding: 10,
-    fontSize: 20,
-    marginVertical: 5,
-    borderRadius: 10,
-  },
-  button: {
-    backgroundColor: "#050A12",
-    height: 50,
+  content: {
+    paddingHorizontal: 32,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 10,
-    marginVertical: 5,
+    paddingVertical: 40,
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    borderRadius: 16,
+    marginBottom: 32,
+    backgroundColor: "#e3f2fd", // Fallback color
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: "700",
+    color: "#1a365d",
+    marginBottom: 8,
+    fontFamily: "Inter_700Bold",
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#4a5568",
+    textAlign: "center",
+    marginBottom: 40,
+    paddingHorizontal: 20,
+    lineHeight: 24,
+  },
+  input: {
+    width: "100%",
+    height: 56,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    color: "#1a365d",
+    backgroundColor: "white",
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  button: {
+    width: "100%",
+    height: 56,
+    backgroundColor: "#3b82f6",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    marginBottom: 16,
+  },
+  buttonPressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
   },
   buttonText: {
     color: "white",
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
 
