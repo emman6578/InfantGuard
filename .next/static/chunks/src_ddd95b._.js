@@ -856,6 +856,7 @@ const VaccineForm = ({ childData })=>{
                                             doseDates.push(schedule.UpdateThirdDose ? new Date(schedule.UpdateThirdDose).toLocaleDateString() : "N/A");
                                         }
                                         // Combine remarks from different dose fields into one sentence.
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                         const getCombinedRemarks = (schedule)=>{
                                             const remarksArray = [];
                                             if (schedule.remark_FirstDose) {
@@ -879,7 +880,7 @@ const VaccineForm = ({ childData })=>{
                                                     children: vaccineInfo ? vaccineInfo.vaccine_name : "N/A"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                                                    lineNumber: 243,
+                                                    lineNumber: 244,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -887,7 +888,7 @@ const VaccineForm = ({ childData })=>{
                                                     children: doses
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                                                    lineNumber: 246,
+                                                    lineNumber: 247,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -899,17 +900,17 @@ const VaccineForm = ({ childData })=>{
                                                                 children: date
                                                             }, idx, false, {
                                                                 fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                                                                lineNumber: 252,
+                                                                lineNumber: 253,
                                                                 columnNumber: 27
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                                                        lineNumber: 250,
+                                                        lineNumber: 251,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                                                    lineNumber: 249,
+                                                    lineNumber: 250,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -917,13 +918,13 @@ const VaccineForm = ({ childData })=>{
                                                     children: remarks
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                                                    lineNumber: 261,
+                                                    lineNumber: 262,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, index, true, {
                                             fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                                            lineNumber: 242,
+                                            lineNumber: 243,
                                             columnNumber: 19
                                         }, this);
                                     })
@@ -951,7 +952,7 @@ const VaccineForm = ({ childData })=>{
                             children: "Instructions:"
                         }, void 0, false, {
                             fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                            lineNumber: 273,
+                            lineNumber: 274,
                             columnNumber: 11
                         }, this),
                         " Sa column ng",
@@ -960,7 +961,7 @@ const VaccineForm = ({ childData })=>{
                             children: "Petsa ng Bakuna"
                         }, void 0, false, {
                             fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                            lineNumber: 274,
+                            lineNumber: 275,
                             columnNumber: 11
                         }, this),
                         ", isulat ang petsa ng pagbibigay ng bakuna. Sa column ng ",
@@ -968,14 +969,14 @@ const VaccineForm = ({ childData })=>{
                             children: "Remarks"
                         }, void 0, false, {
                             fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                            lineNumber: 275,
+                            lineNumber: 276,
                             columnNumber: 32
                         }, this),
                         ", isulat ang petsa ng pagbalik para sa susunod na dose, o anumang mahalagang impormasyon na maaaring makaapekto sa pagbabakuna ng bata."
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/home/about/vaccineForm.tsx",
-                    lineNumber: 272,
+                    lineNumber: 273,
                     columnNumber: 9
                 }, this)
             ]
@@ -1562,7 +1563,7 @@ const MainVaccinePage = ()=>{
             // Calculate the dimensions for the image in PDF
             const imgProps = pdf.getImageProperties(imgData);
             const imageAspectRatio = imgProps.height / imgProps.width;
-            let renderedPdfHeight = pdfWidth * imageAspectRatio;
+            const renderedPdfHeight = pdfWidth * imageAspectRatio;
             let heightLeft = renderedPdfHeight;
             let position = 0;
             // Add pages until the entire image is added

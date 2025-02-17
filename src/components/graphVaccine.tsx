@@ -14,12 +14,6 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { Infant } from "../app/home/page"; // Or from your shared types file
-
-/** The API for vaccine percentages returns an object with a `data` property (an array of infants) */
-interface VaccineGraphResponse {
-  data: Infant[];
-}
 
 /** Type used for the aggregated stats per vaccine */
 interface VaccineStat {

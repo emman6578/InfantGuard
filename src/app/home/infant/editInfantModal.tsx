@@ -37,6 +37,7 @@ const InfantModal: React.FC<InfantModalProps> = ({
   const queryClient = useQueryClient();
 
   const updateMutation = useMutation({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationFn: ({ data, id }: { data: any; id: string }) =>
       updateInfant(data, id),
     onSuccess: () => {
@@ -91,6 +92,7 @@ const InfantModal: React.FC<InfantModalProps> = ({
 
   const handleSave = async () => {
     // Build data object – include only fields the user modified.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = {
       ...(fullname && { fullname }),
       ...(place_of_birth && { place_of_birth }),

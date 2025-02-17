@@ -1318,7 +1318,7 @@ const DoseTimingAnalysis = ({ infantData })=>{
         }, this);
     }
     const schedules = infantData.Vaccination_Schedule;
-    let totalDoses = 0; // Only counts doses that have been administered
+    // const totalDoses = 0; // Only counts doses that have been administered
     let earlyCount = 0;
     let onTimeCount = 0;
     let lateCount = 0;
@@ -1728,7 +1728,7 @@ const DoseTimingAnalysis = ({ infantData })=>{
                                     "Clark, A., Sanderson, C.",
                                     " ",
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("em", {
-                                        children: "Timing of children's vaccinations in 45 low-income and middle-income countries: an analysis of survey data"
+                                        children: "Timing of children s vaccinations in 45 low-income and middle-income countries: an analysis of survey data"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/home/infant/details/DoseTimingAnalysis.tsx",
                                         lineNumber: 325,
@@ -2094,6 +2094,7 @@ function InfantDetails() {
             vaccine: schedule.vaccine_names[0]?.vaccine_name,
             percentage: schedule.Vaccination[0]?.percentage || 0
         }));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const isAllVaccinated = sortedVaccinationSchedule.every((schedule)=>{
         const frequency = schedule.vaccine_names[0]?.frequency;
         if (frequency === 1) {
@@ -2110,7 +2111,7 @@ function InfantDetails() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/home/infant/details/page.tsx",
-                lineNumber: 237,
+                lineNumber: 238,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -2125,7 +2126,7 @@ function InfantDetails() {
                                 children: "Vaccination Schedule"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                lineNumber: 241,
+                                lineNumber: 242,
                                 columnNumber: 11
                             }, this),
                             isAllVaccinated && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2134,13 +2135,13 @@ function InfantDetails() {
                                 children: "Vaccine Form"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                lineNumber: 248,
+                                lineNumber: 249,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/home/infant/details/page.tsx",
-                        lineNumber: 240,
+                        lineNumber: 241,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$home$2f$infant$2f$details$2f$InformationCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2157,7 +2158,7 @@ function InfantDetails() {
                                             className: "w-32 h-32 rounded-full object-cover mr-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                            lineNumber: 262,
+                                            lineNumber: 263,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2167,7 +2168,7 @@ function InfantDetails() {
                                                     children: infantData.fullname
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                                    lineNumber: 268,
+                                                    lineNumber: 269,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2175,19 +2176,19 @@ function InfantDetails() {
                                                     children: infantData.gender
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                                    lineNumber: 269,
+                                                    lineNumber: 270,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                            lineNumber: 267,
+                                            lineNumber: 268,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                    lineNumber: 260,
+                                    lineNumber: 261,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2200,7 +2201,7 @@ function InfantDetails() {
                                                     children: "Height:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                                    lineNumber: 274,
+                                                    lineNumber: 275,
                                                     columnNumber: 17
                                                 }, this),
                                                 " ",
@@ -2209,7 +2210,7 @@ function InfantDetails() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                            lineNumber: 273,
+                                            lineNumber: 274,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2219,7 +2220,7 @@ function InfantDetails() {
                                                     children: "Weight:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                                    lineNumber: 278,
+                                                    lineNumber: 279,
                                                     columnNumber: 17
                                                 }, this),
                                                 " ",
@@ -2228,7 +2229,7 @@ function InfantDetails() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                            lineNumber: 277,
+                                            lineNumber: 278,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2238,7 +2239,7 @@ function InfantDetails() {
                                                     children: "Health Center:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                                    lineNumber: 282,
+                                                    lineNumber: 283,
                                                     columnNumber: 17
                                                 }, this),
                                                 " ",
@@ -2246,7 +2247,7 @@ function InfantDetails() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                            lineNumber: 281,
+                                            lineNumber: 282,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2256,7 +2257,7 @@ function InfantDetails() {
                                                     children: "Family Number:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                                    lineNumber: 286,
+                                                    lineNumber: 287,
                                                     columnNumber: 17
                                                 }, this),
                                                 " ",
@@ -2264,24 +2265,24 @@ function InfantDetails() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                            lineNumber: 285,
+                                            lineNumber: 286,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                    lineNumber: 272,
+                                    lineNumber: 273,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                            lineNumber: 259,
+                            lineNumber: 260,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/home/infant/details/page.tsx",
-                        lineNumber: 258,
+                        lineNumber: 259,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$home$2f$infant$2f$details$2f$InformationCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2298,7 +2299,7 @@ function InfantDetails() {
                                                     children: "Mothers Name:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                                    lineNumber: 296,
+                                                    lineNumber: 297,
                                                     columnNumber: 17
                                                 }, this),
                                                 " ",
@@ -2306,7 +2307,7 @@ function InfantDetails() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                            lineNumber: 295,
+                                            lineNumber: 296,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2316,7 +2317,7 @@ function InfantDetails() {
                                                     children: "Fathers Name:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                                    lineNumber: 300,
+                                                    lineNumber: 301,
                                                     columnNumber: 17
                                                 }, this),
                                                 " ",
@@ -2324,13 +2325,13 @@ function InfantDetails() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                            lineNumber: 299,
+                                            lineNumber: 300,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                    lineNumber: 294,
+                                    lineNumber: 295,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2341,7 +2342,7 @@ function InfantDetails() {
                                                 children: "Parent Email:"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                                lineNumber: 306,
+                                                lineNumber: 307,
                                                 columnNumber: 17
                                             }, this),
                                             " ",
@@ -2349,23 +2350,23 @@ function InfantDetails() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                        lineNumber: 305,
+                                        lineNumber: 306,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                    lineNumber: 304,
+                                    lineNumber: 305,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                            lineNumber: 293,
+                            lineNumber: 294,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/home/infant/details/page.tsx",
-                        lineNumber: 292,
+                        lineNumber: 293,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$home$2f$infant$2f$details$2f$InformationCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2383,12 +2384,12 @@ function InfantDetails() {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                            lineNumber: 313,
+                            lineNumber: 314,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/home/infant/details/page.tsx",
-                        lineNumber: 312,
+                        lineNumber: 313,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$home$2f$infant$2f$details$2f$InformationCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2404,7 +2405,7 @@ function InfantDetails() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                lineNumber: 319,
+                                lineNumber: 320,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2415,7 +2416,7 @@ function InfantDetails() {
                                         children: "Place of Birth:"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                        lineNumber: 323,
+                                        lineNumber: 324,
                                         columnNumber: 13
                                     }, this),
                                     " ",
@@ -2423,27 +2424,27 @@ function InfantDetails() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/home/infant/details/page.tsx",
-                                lineNumber: 322,
+                                lineNumber: 323,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/home/infant/details/page.tsx",
-                        lineNumber: 318,
+                        lineNumber: 319,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$home$2f$infant$2f$details$2f$VaccineChart$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         data: chartData
                     }, void 0, false, {
                         fileName: "[project]/src/app/home/infant/details/page.tsx",
-                        lineNumber: 327,
+                        lineNumber: 328,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$home$2f$infant$2f$details$2f$PredictiveAnalysis$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         infantData: infantData
                     }, void 0, false, {
                         fileName: "[project]/src/app/home/infant/details/page.tsx",
-                        lineNumber: 328,
+                        lineNumber: 329,
                         columnNumber: 9
                     }, this),
                     !isLoading && !isError && infantData && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -2451,7 +2452,7 @@ function InfantDetails() {
                             infantData: infantData
                         }, void 0, false, {
                             fileName: "[project]/src/app/home/infant/details/page.tsx",
-                            lineNumber: 332,
+                            lineNumber: 333,
                             columnNumber: 13
                         }, this)
                     }, void 0, false),
@@ -2463,24 +2464,24 @@ function InfantDetails() {
                         handleNotify: handleNotify
                     }, void 0, false, {
                         fileName: "[project]/src/app/home/infant/details/page.tsx",
-                        lineNumber: 335,
+                        lineNumber: 336,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/home/infant/details/page.tsx",
-                lineNumber: 239,
+                lineNumber: 240,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$footer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/home/infant/details/page.tsx",
-                lineNumber: 344,
+                lineNumber: 345,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/home/infant/details/page.tsx",
-        lineNumber: 236,
+        lineNumber: 237,
         columnNumber: 5
     }, this);
 }

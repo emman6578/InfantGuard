@@ -215,6 +215,7 @@ const VaccineForm = ({ childData }) => {
                 }
 
                 // Combine remarks from different dose fields into one sentence.
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const getCombinedRemarks = (schedule: any) => {
                   const remarksArray = [];
 

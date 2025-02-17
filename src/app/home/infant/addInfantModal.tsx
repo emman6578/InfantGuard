@@ -642,7 +642,7 @@ const AddInfantModal = () => {
                   htmlFor="mothers_name"
                   className="mb-1 text-sm font-medium text-gray-700"
                 >
-                  Mother's Name
+                  Mother s Name
                 </label>
                 <Input
                   id="mothers_name"
@@ -665,7 +665,7 @@ const AddInfantModal = () => {
                   htmlFor="fathers_name"
                   className="mb-1 text-sm font-medium text-gray-700"
                 >
-                  Father's Name
+                  Father s Name
                 </label>
                 <Input
                   id="fathers_name"

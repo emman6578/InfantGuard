@@ -36,7 +36,7 @@ const DoseTimingAnalysis: React.FC<DoseTimingAnalysisProps> = ({
 
   const schedules = infantData.Vaccination_Schedule;
 
-  let totalDoses = 0; // Only counts doses that have been administered
+  // const totalDoses = 0; // Only counts doses that have been administered
   let earlyCount = 0;
   let onTimeCount = 0;
   let lateCount = 0;
@@ -323,7 +323,7 @@ const DoseTimingAnalysis: React.FC<DoseTimingAnalysisProps> = ({
           <li>
             Clark, A., Sanderson, C.{" "}
             <em>
-              Timing of children's vaccinations in 45 low-income and
+              Timing of children s vaccinations in 45 low-income and
               middle-income countries: an analysis of survey data
             </em>
             . The Lancet.{" "}

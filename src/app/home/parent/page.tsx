@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Footer from "@/components/footer";
@@ -87,7 +89,7 @@ const ParentManagement = () => {
   };
 
   const handleChange = (parentId: string, field: string, value: string) => {
-    setEditableData((prev) => {
+    setEditableData((prev: any) => {
       const currentParent = prev[parentId] ? { ...prev[parentId] } : {};
       const fields = field.split(".");
 

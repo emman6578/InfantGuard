@@ -97,7 +97,7 @@ const MainVaccinePage = () => {
       // Calculate the dimensions for the image in PDF
       const imgProps = pdf.getImageProperties(imgData);
       const imageAspectRatio = imgProps.height / imgProps.width;
-      let renderedPdfHeight = pdfWidth * imageAspectRatio;
+      const renderedPdfHeight = pdfWidth * imageAspectRatio;
       let heightLeft = renderedPdfHeight;
       let position = 0;
 

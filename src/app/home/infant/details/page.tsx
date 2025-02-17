@@ -216,6 +216,7 @@ export default function InfantDetails() {
     percentage: schedule.Vaccination[0]?.percentage || 0,
   }));
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isAllVaccinated = sortedVaccinationSchedule.every((schedule: any) => {
     const frequency = schedule.vaccine_names[0]?.frequency;
     if (frequency === 1) {
