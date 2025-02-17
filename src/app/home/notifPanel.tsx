@@ -17,12 +17,12 @@ export default function Notifications({ notifications }: NotificationsProps) {
                 {notification.title}
               </h3>
               <span className="text-sm text-gray-500">
-                {new Date(notification.created).toLocaleString()}
+                {new Date(notification?.created).toLocaleString()}
               </span>
             </div>
             <p className="mt-2 text-gray-700">{notification.body}</p>
             <p className="mt-1 text-sm text-gray-600">
-              Parent: {notification.parent.fullname}
+              Parent: {notification?.parent?.fullname}
             </p>
           </div>
         ))}

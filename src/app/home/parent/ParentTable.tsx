@@ -31,7 +31,7 @@ export const ParentTable = ({
   isUpdating,
   isDeleting,
 }: ParentTableProps) => (
-  <Table>
+  <Table className="bg-white rounded-2xl">
     <TableHeader>
       <TableRow>
         <TableHead>Full Name</TableHead>

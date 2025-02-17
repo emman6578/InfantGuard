@@ -16,13 +16,13 @@ const Sidebar = () => {
   const isHomeActive = currentPath === "/" || currentPath === "/home";
 
   return (
-    <aside className="bg-gray-900 text-white p-6 h-full sticky top-0">
-      <p className="mb-20">Admin Dashboard</p>
+    <aside className="bg-[#ffbd5f] text-black p-3 h-full sticky top-0">
+      <p className="mb-20 text-2xl font-bold">Admin Dashboard</p>
       <nav className="flex flex-col gap-2">
         <button
           onClick={() => handleTabClick("/home")}
-          className={`px-4 py-2 rounded hover:bg-gray-800 transition-colors duration-200 text-left ${
-            isHomeActive ? "bg-gray-800 text-blue-400 font-semibold" : ""
+          className={`px-4 py-2 rounded hover:bg-gray-600 transition-colors duration-200 text-left text-lg font-bold ${
+            isHomeActive ? "bg-gray-800 text-blue-400" : ""
           }`}
         >
           Home
@@ -30,10 +30,8 @@ const Sidebar = () => {
 
         <button
           onClick={() => handleTabClick("/home/parent")}
-          className={`px-4 py-2 rounded hover:bg-gray-800 transition-colors duration-200 text-left ${
-            currentPath === "/home/parent"
-              ? "bg-gray-800 text-blue-400 font-semibold"
-              : ""
+          className={`px-4 py-2 rounded hover:bg-gray-600 transition-colors duration-200 text-left text-lg font-bold ${
+            currentPath === "/home/parent" ? "bg-gray-800 text-blue-400" : ""
           }`}
         >
           Parent Management
@@ -41,10 +39,8 @@ const Sidebar = () => {
 
         <button
           onClick={() => handleTabClick("/home/infant")}
-          className={`px-4 py-2 rounded hover:bg-gray-800 transition-colors duration-200 text-left ${
-            currentPath === "/home/infant"
-              ? "bg-gray-800 text-blue-400 font-semibold"
-              : ""
+          className={`px-4 py-2 rounded hover:bg-gray-600 transition-colors duration-200 text-left text-lg font-bold ${
+            currentPath === "/home/infant" ? "bg-gray-800 text-blue-400" : ""
           }`}
         >
           Infant Management
@@ -52,32 +48,26 @@ const Sidebar = () => {
 
         <button
           onClick={() => handleTabClick("/home/vaccine")}
-          className={`px-4 py-2 rounded hover:bg-gray-800 transition-colors duration-200 text-left ${
-            currentPath === "/home/vaccine"
-              ? "bg-gray-800 text-blue-400 font-semibold"
-              : ""
+          className={`px-4 py-2 rounded hover:bg-gray-600 transition-colors duration-200 text-left text-lg font-bold ${
+            currentPath === "/home/vaccine" ? "bg-gray-800 text-blue-400" : ""
           }`}
         >
-          Vaccine Management
+          Download Data
         </button>
 
         <button
-          onClick={() => handleTabClick("/about")}
-          className={`px-4 py-2 rounded hover:bg-gray-800 transition-colors duration-200 text-left ${
-            currentPath === "/about"
-              ? "bg-gray-800 text-blue-400 font-semibold"
-              : ""
+          onClick={() => handleTabClick("/home/about")}
+          className={`px-4 py-2 rounded hover:bg-gray-600 transition-colors duration-200 text-left text-lg font-bold ${
+            currentPath === "/about" ? "bg-gray-800 text-blue-400" : ""
           }`}
         >
-          About
+          Download Vaccine Form
         </button>
 
         <button
           onClick={() => handleTabClick("/contact")}
-          className={`px-4 py-2 rounded hover:bg-gray-800 transition-colors duration-200 text-left ${
-            currentPath === "/contact"
-              ? "bg-gray-800 text-blue-400 font-semibold"
-              : ""
+          className={`px-4 py-2 rounded hover:bg-gray-600 transition-colors duration-200 text-left text-lg font-bold ${
+            currentPath === "/contact" ? "bg-gray-800 text-blue-400" : ""
           }`}
         >
           Contact Us

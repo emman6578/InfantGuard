@@ -93,8 +93,10 @@ function VaccineScheduleItem({ schedule, handleUpdate, handleNotify }: any) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function DoseStatus({ dose, schedule, handleUpdate, handleNotify }: any) {
-  // Local state to hold the selected date from the calendar.
+  // Local state for the selected date from the calendar.
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  // Local state to control the popover (calendar) open state.
+  const [open, setOpen] = useState(false);
 
   // For display purposes: e.g. "firstDose" becomes "first Dose"
   const doseLabel = dose.replace("Dose", " Dose");
@@ -108,7 +110,7 @@ function DoseStatus({ dose, schedule, handleUpdate, handleNotify }: any) {
   const updateDate = schedule[updateKey];
   const remark = schedule[remarkKey];
 
-  // When the user confirms a date, format it as mm-dd-yyyy and call handleUpdate.
+  // When the user confirms a date, format it as mm-dd-yyyy, call handleUpdate, and close the popover.
   const handleDateConfirm = (date: Date) => {
     // Reset the selected date.
     setSelectedDate(null);
@@ -126,6 +128,8 @@ function DoseStatus({ dose, schedule, handleUpdate, handleNotify }: any) {
       formattedDate,
       schedule?.id
     );
+    // Close the popover.
+    setOpen(false);
   };
 
   return (
@@ -141,9 +145,9 @@ function DoseStatus({ dose, schedule, handleUpdate, handleNotify }: any) {
         >
           {formatDate(scheduledDate)} - {status || "PENDING"}
         </span>
-        {/* Always show the Update and Remind buttons */}
+        {/* Always show the Update button, but only show Remind if status is not "DONE" */}
         <div className="flex gap-2">
-          <Popover>
+          <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
                 Update
@@ -160,8 +164,8 @@ function DoseStatus({ dose, schedule, handleUpdate, handleNotify }: any) {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    // Clear the selected date and close the popover.
                     setSelectedDate(null);
+                    setOpen(false);
                   }}
                 >
                   Cancel
@@ -177,17 +181,19 @@ function DoseStatus({ dose, schedule, handleUpdate, handleNotify }: any) {
               </div>
             </PopoverContent>
           </Popover>
-          <Button
-            onClick={() =>
-              handleNotify(
-                vaccineName,
-                `${doseLabel} - ${formatDate(scheduledDate)}`
-              )
-            }
-            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Remind
-          </Button>
+          {status !== "DONE" && (
+            <Button
+              onClick={() =>
+                handleNotify(
+                  vaccineName,
+                  `${doseLabel} - ${formatDate(scheduledDate)}`
+                )
+              }
+              className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Remind
+            </Button>
+          )}
         </div>
       </div>
 

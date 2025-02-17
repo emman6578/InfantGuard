@@ -52,6 +52,11 @@ interface ProtectedRoutesType {
     date: string
   ) => Promise<unknown>;
   getAdminDataDashBoard: () => Promise<unknown>;
+  CreateVaccineSchedule: (id: string) => Promise<unknown>;
+  CreateVaccineProgress: (id: string) => Promise<unknown>;
+  infantDataDownload: () => Promise<unknown>;
+  UploadDocumentToInfant: (id: string, pdfUri: File) => Promise<unknown>;
+  downloadInfantVaccineProgress: (id: string) => Promise<unknown>;
 }
 
 const ProtectedRoutesContext = createContext<ProtectedRoutesType | undefined>(
@@ -477,6 +482,151 @@ export const ProtectedRoutesContextProvider = ({
     return await res.json();
   };
 
+  const CreateVaccineSchedule = async (id: string) => {
+    const data = {
+      infant_id: id,
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/parent/vaccine`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        // Check if response is not OK (status code not in range 200-299)
+        let errorMessage = "Failed to create vaccine schedule";
+        const responseBody = await res.json(); // Attempt to parse response body as JSON
+
+        // Check if response body has an error message from the backend
+        if (responseBody && responseBody.message) {
+          errorMessage = responseBody.message;
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      return await res.json();
+    } catch (error) {
+      console.error("Error Creating Vaccine Schedule:", error);
+      throw error;
+    }
+  };
+
+  const CreateVaccineProgress = async (id: string) => {
+    const data = {
+      infant_id: id,
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/parent/progress`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        // Check if response is not OK (status code not in range 200-299)
+        let errorMessage = "Failed to create vaccine progress";
+        const responseBody = await res.json(); // Attempt to parse response body as JSON
+
+        // Check if response body has an error message from the backend
+        if (responseBody && responseBody.message) {
+          errorMessage = responseBody.message;
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      return await res.json();
+    } catch (error) {
+      console.error("Error Creating Vaccine Progress:", error);
+      throw error;
+    }
+  };
+
+  const infantDataDownload = async () => {
+    const res = await fetch(`${API_URL}/admin/infant-data`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    if (!res.ok) {
+      // Check if response is not OK (status code not in range 200-299)
+      let errorMessage = "Failed to get infant data to download";
+      const responseBody = await res.json(); // Attempt to parse response body as JSON
+
+      // Check if response body has an error message from the backend
+      if (responseBody && responseBody.message) {
+        errorMessage = responseBody.message;
+      }
+
+      throw new Error(errorMessage);
+    }
+
+    return await res.json();
+  };
+
+  const UploadDocumentToInfant = async (id: string, pdfFile: File) => {
+    const formData = new FormData();
+    // Use "pdf" as the key to match the server's expectation.
+    formData.append("pdf", pdfFile);
+
+    try {
+      const res = await fetch(`${API_URL}/admin/upload-pdf/${id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          // Do not set 'Content-Type' header when sending FormData
+        },
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const responseBody = await res.json();
+        throw new Error(responseBody?.message);
+      }
+
+      return await res.json();
+    } catch (error) {
+      console.error("Error Updating Infant Image:", error);
+      throw error;
+    }
+  };
+
+  const downloadInfantVaccineProgress = async (id: string) => {
+    const res = await fetch(`${API_URL}/admin/download/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    if (!res.ok) {
+      // Check if response is not OK (status code not in range 200-299)
+      let errorMessage = "Failed to get infant detail";
+      const responseBody = await res.json(); // Attempt to parse response body as JSON
+
+      // Check if response body has an error message from the backend
+      if (responseBody && responseBody.message) {
+        errorMessage = responseBody.message;
+      }
+
+      throw new Error(errorMessage);
+    }
+
+    return await res.json();
+  };
+
   return (
     <ProtectedRoutesContext.Provider
       value={{
@@ -494,6 +644,11 @@ export const ProtectedRoutesContextProvider = ({
         getPushToken,
         updatVaccineSchedDate,
         getAdminDataDashBoard,
+        CreateVaccineSchedule,
+        CreateVaccineProgress,
+        infantDataDownload,
+        UploadDocumentToInfant,
+        downloadInfantVaccineProgress,
       }}
     >
       {children}

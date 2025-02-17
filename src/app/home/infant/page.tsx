@@ -7,6 +7,9 @@ import InfantList from "./infantList";
 
 import AddInfantModal from "./addInfantModal";
 
+//TODO: Dashboard infant coverage can be sorted by baranggay
+//infant search bar, filter by purok,baranggay , gender
+
 const InfantManagement = () => {
   return (
     <div className="grid grid-cols-[250px_1fr] grid-rows-[1fr_auto] min-h-screen">

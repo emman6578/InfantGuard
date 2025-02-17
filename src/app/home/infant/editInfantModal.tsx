@@ -19,12 +19,6 @@ interface InfantModalProps {
   infant: {
     id: string;
     fullname: string;
-    address: {
-      purok: string;
-      baranggay: string;
-      municipality: string;
-      province: string;
-    };
     place_of_birth: string;
     height: string;
     gender: string;
@@ -43,7 +37,6 @@ const InfantModal: React.FC<InfantModalProps> = ({
   const queryClient = useQueryClient();
 
   const updateMutation = useMutation({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationFn: ({ data, id }: { data: any; id: string }) =>
       updateInfant(data, id),
     onSuccess: () => {
@@ -51,12 +44,8 @@ const InfantModal: React.FC<InfantModalProps> = ({
     },
   });
 
-  // Form state
+  // Form state – only fields that the user modifies will be sent.
   const [fullname, setFullname] = useState("");
-  const [purok, setPurok] = useState("");
-  const [baranggay, setBaranggay] = useState("");
-  const [municipality, setMunicipality] = useState("");
-  const [province, setProvince] = useState("");
   const [place_of_birth, setPlaceOfBirth] = useState("");
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("");
@@ -64,13 +53,9 @@ const InfantModal: React.FC<InfantModalProps> = ({
   const [health_center, setHealthCenter] = useState("");
   const [family_no, setFamilyNo] = useState("");
 
-  // Function to clear all form fields
+  // Optionally clear the form (only clearing the updated fields).
   const clearForm = () => {
     setFullname("");
-    setPurok("");
-    setBaranggay("");
-    setMunicipality("");
-    setProvince("");
     setPlaceOfBirth("");
     setHeight("");
     setGender("");
@@ -79,8 +64,33 @@ const InfantModal: React.FC<InfantModalProps> = ({
     setFamilyNo("");
   };
 
+  // Validation rules:
+  // Only letters and spaces for fullname, place_of_birth, and health_center.
+  const handleTextChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setter: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    const value = e.target.value;
+    // This regex allows only letters (upper/lowercase) and spaces.
+    if (/^[A-Za-z\s]*$/.test(value)) {
+      setter(value);
+    }
+  };
+
+  // Allow numbers with up to 2 decimal places.
+  const handleDecimalChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setter: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    const value = e.target.value;
+    // The regex matches an optional number with an optional decimal point followed by up to two digits.
+    if (/^\d*(\.\d{0,2})?$/.test(value)) {
+      setter(value);
+    }
+  };
+
   const handleSave = async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // Build data object – include only fields the user modified.
     const data: any = {
       ...(fullname && { fullname }),
       ...(place_of_birth && { place_of_birth }),
@@ -91,24 +101,7 @@ const InfantModal: React.FC<InfantModalProps> = ({
       ...(family_no && { family_no: Number(family_no) }),
     };
 
-    // Build the address object only if at least one of its fields has a value.
-    const address =
-      purok || baranggay || municipality || province
-        ? {
-            ...(purok && { purok }),
-            ...(baranggay && { baranggay }),
-            ...(municipality && { municipality }),
-            ...(province && { province }),
-          }
-        : null;
-
-    // If there is an address, add it to the data.
-    if (address) {
-      data.address = address;
-    }
-
     try {
-      // Pass an object with both data and id
       await updateMutation.mutateAsync({ data, id: infant!.id });
       clearForm();
     } catch (error) {
@@ -138,69 +131,9 @@ const InfantModal: React.FC<InfantModalProps> = ({
             <Input
               id="fullname"
               value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
+              onChange={(e) => handleTextChange(e, setFullname)}
               placeholder={infant.fullname}
             />
-          </div>
-
-          {/* Address Fields */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="flex flex-col">
-              <label
-                htmlFor="purok"
-                className="mb-1 text-sm font-medium text-gray-700"
-              >
-                Purok
-              </label>
-              <Input
-                id="purok"
-                value={purok}
-                onChange={(e) => setPurok(e.target.value)}
-                placeholder={infant.address.purok}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label
-                htmlFor="baranggay"
-                className="mb-1 text-sm font-medium text-gray-700"
-              >
-                Baranggay
-              </label>
-              <Input
-                id="baranggay"
-                value={baranggay}
-                onChange={(e) => setBaranggay(e.target.value)}
-                placeholder={infant.address.baranggay}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label
-                htmlFor="municipality"
-                className="mb-1 text-sm font-medium text-gray-700"
-              >
-                Municipality
-              </label>
-              <Input
-                id="municipality"
-                value={municipality}
-                onChange={(e) => setMunicipality(e.target.value)}
-                placeholder={infant.address.municipality}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label
-                htmlFor="province"
-                className="mb-1 text-sm font-medium text-gray-700"
-              >
-                Province
-              </label>
-              <Input
-                id="province"
-                value={province}
-                onChange={(e) => setProvince(e.target.value)}
-                placeholder={infant.address.province}
-              />
-            </div>
           </div>
 
           {/* Place of Birth */}
@@ -214,12 +147,12 @@ const InfantModal: React.FC<InfantModalProps> = ({
             <Input
               id="place_of_birth"
               value={place_of_birth}
-              onChange={(e) => setPlaceOfBirth(e.target.value)}
+              onChange={(e) => handleTextChange(e, setPlaceOfBirth)}
               placeholder={infant.place_of_birth}
             />
           </div>
 
-          {/* Physical details */}
+          {/* Physical Details */}
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col">
               <label
@@ -231,7 +164,7 @@ const InfantModal: React.FC<InfantModalProps> = ({
               <Input
                 id="height"
                 value={height}
-                onChange={(e) => setHeight(e.target.value)}
+                onChange={(e) => handleDecimalChange(e, setHeight)}
                 placeholder={infant.height}
               />
             </div>
@@ -245,7 +178,7 @@ const InfantModal: React.FC<InfantModalProps> = ({
               <Input
                 id="weight"
                 value={weight}
-                onChange={(e) => setWeight(e.target.value)}
+                onChange={(e) => handleDecimalChange(e, setWeight)}
                 placeholder={infant.weight}
               />
             </div>
@@ -259,15 +192,19 @@ const InfantModal: React.FC<InfantModalProps> = ({
             >
               Gender
             </label>
-            <Input
+            <select
               id="gender"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              placeholder={infant.gender}
-            />
+              className="border rounded p-2"
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
           </div>
 
-          {/* Health and Family details */}
+          {/* Health Center */}
           <div className="flex flex-col">
             <label
               htmlFor="health_center"
@@ -278,10 +215,12 @@ const InfantModal: React.FC<InfantModalProps> = ({
             <Input
               id="health_center"
               value={health_center}
-              onChange={(e) => setHealthCenter(e.target.value)}
+              onChange={(e) => handleTextChange(e, setHealthCenter)}
               placeholder={infant.health_center}
             />
           </div>
+
+          {/* Family Number */}
           <div className="flex flex-col">
             <label
               htmlFor="family_no"
@@ -289,17 +228,26 @@ const InfantModal: React.FC<InfantModalProps> = ({
             >
               Family Number
             </label>
-            <Input
+            <select
               id="family_no"
               value={family_no}
               onChange={(e) => setFamilyNo(e.target.value)}
-              placeholder={infant.family_no}
-            />
+              className="border rounded p-2"
+            >
+              <option value="">Select Family Number</option>
+              {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
         <DialogFooter>
-          <Button onClick={handleSave}>Save</Button>
+          <Button onClick={handleSave} disabled={updateMutation.isLoading}>
+            Save
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

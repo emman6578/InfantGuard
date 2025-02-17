@@ -77,7 +77,11 @@ const ParentManagement = () => {
   };
 
   const handleDelete = (parentId: string) => {
-    if (confirm("Are you sure you want to delete this parent?")) {
+    if (
+      confirm(
+        "Are you sure you want to delete this parent? This also delete infant's details corresponding with this Parent"
+      )
+    ) {
       deleteMutation.mutate(parentId);
     }
   };
@@ -146,11 +150,11 @@ const ParentManagement = () => {
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <div className="grid grid-cols-[250px_1fr] grid-rows-[1fr_auto] min-h-screen">
+    <div className="grid grid-cols-[250px_1fr] grid-rows-[1fr_auto] min-h-screen ">
       <Sidebar />
-      <main className="p-8 sm:p-20 font-[family-name:var(--font-geist-sans)] flex flex-col gap-8">
+      <main className="p-8 sm:p-20 font-[family-name:var(--font-geist-sans)] flex flex-col gap-8 bg-[#026167]">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Parent Management</h1>
+          <h1 className="text-2xl font-bold text-cyan-50">Parent Management</h1>
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
           <BaranggayFilter
@@ -172,7 +176,7 @@ const ParentManagement = () => {
             isDeleting={deleteMutation.isPending}
           />
           {filteredParents.length === 0 && (
-            <div className="text-center py-4 text-gray-500">
+            <div className="text-center py-4 text-black">
               No parents found matching your search
             </div>
           )}

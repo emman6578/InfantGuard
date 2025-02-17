@@ -20,7 +20,12 @@ export default function LogoutBtn() {
 
   return (
     <div>
-      <Button onClick={handlePress} variant={"secondary"} size={"lg"}>
+      <Button
+        onClick={handlePress}
+        variant={"secondary"}
+        size={"lg"}
+        className="bg-[#23966d]"
+      >
         Logout
       </Button>
     </div>

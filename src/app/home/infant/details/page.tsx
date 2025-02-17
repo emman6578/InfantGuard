@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 import Sidebar from "@/components/sidebar";
 import { useProtectedRoutesApi } from "@/libraries/API/ProtectedRoute/secureRoutes";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import InformationCard from "./InformationCard";
 import VaccineChart from "./VaccineChart";
 import PredictiveAnalysis from "./PredictiveAnalysis";
@@ -14,6 +14,7 @@ import { formatDate, getMonthName } from "./utils";
 import InfantDoseTimingAnalysis from "./DoseTimingAnalysis";
 
 export default function InfantDetails() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const {
@@ -215,6 +216,22 @@ export default function InfantDetails() {
     percentage: schedule.Vaccination[0]?.percentage || 0,
   }));
 
+  const isAllVaccinated = sortedVaccinationSchedule.every((schedule: any) => {
+    const frequency = schedule.vaccine_names[0]?.frequency;
+    if (frequency === 1) {
+      return !!schedule.UpdateFirstDose;
+    } else if (frequency === 2) {
+      return !!schedule.UpdateFirstDose && !!schedule.UpdateSecondDose;
+    } else if (frequency === 3) {
+      return (
+        !!schedule.UpdateFirstDose &&
+        !!schedule.UpdateSecondDose &&
+        !!schedule.UpdateThirdDose
+      );
+    }
+    return false;
+  });
+
   return (
     <div className="grid grid-cols-[250px_1fr] grid-rows-[1fr_auto] min-h-screen">
       <Sidebar />
@@ -227,6 +244,16 @@ export default function InfantDetails() {
           >
             Vaccination Schedule
           </button>
+          {isAllVaccinated && (
+            <button
+              onClick={() =>
+                router.push(`/home/about?infantId=${infantData.id}`)
+              }
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 ml-3"
+            >
+              Vaccine Form
+            </button>
+          )}
         </div>
         <InformationCard title="Personal Information">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -284,8 +311,8 @@ export default function InfantDetails() {
         </InformationCard>
         <InformationCard title="Address">
           <p>
-            {address?.purok} Purok, {address?.baranggay},{" "}
-            {address?.municipality}, {address?.province}
+            {address?.purok}, {address?.baranggay}, {address?.municipality},{" "}
+            {address?.province}
           </p>
         </InformationCard>
         <InformationCard title="Birthday Details">
