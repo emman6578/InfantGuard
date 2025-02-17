@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/natha/OneDrive/Desktop/infantguardadmin/src/app/home/about/page.tsx"],"sourcesContent":["\"use client\";\r\n\r\nimport VaccinePage from \"./page1\";\r\n\r\nconst MainVaccinePage = () => {\r\n  return (\r\n    <div className=\"grid grid-cols-[250px_1fr] grid-rows-[1fr_auto] min-h-screen\">\r\n      {/* Sidebar */}\r\n      <Sidebar />\r\n    </div>\r\n  );\r\n};\r\n\r\nexport default MainVaccinePage;\r\n"],"names":[],"mappings":";;;;AAAA;;AAIA,MAAM,kBAAkB;IACtB,qBACE,6LAAC;QAAI,WAAU;kBAEb,cAAA,6LAAC;;;;;;;;;;AAGP;KAPM;uCASS"}},
+    {"offset": {"line": 34, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}
