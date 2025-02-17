@@ -83,6 +83,7 @@ const OneInfant = () => {
     queryClient.invalidateQueries({ queryKey: ["progress", id] });
     queryClient.invalidateQueries({ queryKey: ["percentage"] });
     queryClient.invalidateQueries({ queryKey: ["all_schedule"] });
+    queryClient.invalidateQueries({ queryKey: ["files"] });
     setIsRefreshing(false);
     createVaccineProgress();
   };

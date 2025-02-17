@@ -25,10 +25,6 @@ export default function RootLayout() {
 }
 
 //TODO:
-
-//0 add functionality in register detect if the user is already there for example  if the user has match contact number dont create another just update the email and the address
-
-//1. Redesign Authentication Pages - login, register, auth
 //2. Redesign in [id].tsx infant InfantProgress component the modal
 //3. Setting Page of parent
 //4. The parent can edit infant's details see: Figma prototype

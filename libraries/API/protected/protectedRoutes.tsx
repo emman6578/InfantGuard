@@ -16,10 +16,6 @@ interface ProtectedRoutesType {
     month: number,
     day: number,
     year: number,
-    purok: string,
-    baranggay: string,
-    municipality: string,
-    province: string,
     place_of_birth: string,
     height: number,
     gender: string,
@@ -37,6 +33,8 @@ interface ProtectedRoutesType {
   ) => Promise<any>;
   getNotification: () => Promise<any>;
   updatePushTokenUser: (expoPushToken: string) => Promise<any>;
+  ParentInfo: () => Promise<any>;
+  GetFilesFromServer: () => Promise<any>;
 }
 
 const ProtectedRoutesContext = createContext<ProtectedRoutesType | undefined>(
@@ -257,15 +255,12 @@ export const ProtectedRoutesContextProvider = ({
     return await res.json();
   };
 
+  // Updated CreateChildInfo function (without address fields)
   const CreateChildInfo = async (
     fullname: string,
     month: number,
     day: number,
     year: number,
-    purok: string,
-    baranggay: string,
-    municipality: string,
-    province: string,
     place_of_birth: string,
     height: number,
     gender: string,
@@ -276,26 +271,20 @@ export const ProtectedRoutesContextProvider = ({
     family_no: number
   ) => {
     const data = {
-      fullname: fullname,
+      fullname,
       birthday: {
-        month: month,
-        day: day,
-        year: year,
+        month,
+        day,
+        year,
       },
-      address: {
-        purok: purok,
-        baranggay: baranggay,
-        municipality: municipality,
-        province: province,
-      },
-      place_of_birth: place_of_birth,
-      height: height,
-      gender: gender,
-      weight: weight,
-      mothers_name: mothers_name,
-      fathers_name: fathers_name,
-      health_center: health_center,
-      family_no: family_no,
+      place_of_birth,
+      height,
+      gender,
+      weight,
+      mothers_name,
+      fathers_name,
+      health_center,
+      family_no,
     };
 
     try {
@@ -309,19 +298,15 @@ export const ProtectedRoutesContextProvider = ({
       });
 
       if (!res.ok) {
-        // Check if response is not OK (status code not in range 200-299)
         let errorMessage = "Failed to create infant";
-        const responseBody = await res.json(); // Attempt to parse response body as JSON
-
-        // Check if response body has an error message from the backend
+        const responseBody = await res.json();
         if (responseBody && responseBody.message) {
           errorMessage = responseBody.message;
         }
-
         throw new Error(errorMessage);
       }
 
-      return await res.json(); // Ensure the response includes the infant ID
+      return await res.json();
     } catch (error) {
       console.error("Error Creating Infant details:", error);
       throw error;
@@ -447,6 +432,51 @@ export const ProtectedRoutesContextProvider = ({
     return await res.json();
   };
 
+  const ParentInfo = async () => {
+    const res = await fetch(`${API_URL}/parent/parent-info`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    if (!res.ok) {
+      // Check if response is not OK (status code not in range 200-299)
+      let errorMessage = "Failed to get parent details";
+      const responseBody = await res.json(); // Attempt to parse response body as JSON
+
+      // Check if response body has an error message from the backend
+      if (responseBody && responseBody.message) {
+        errorMessage = responseBody.message;
+      }
+
+      throw new Error(errorMessage);
+    }
+
+    return await res.json();
+  };
+
+  const GetFilesFromServer = async () => {
+    const res = await fetch(`${API_URL}/admin/file`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    if (!res.ok) {
+      // Check if response is not OK (status code not in range 200-299)
+      let errorMessage = "Failed to get files from server";
+      const responseBody = await res.json(); // Attempt to parse response body as JSON
+
+      // Check if response body has an error message from the backend
+      if (responseBody && responseBody.message) {
+        errorMessage = responseBody.message;
+      }
+
+      throw new Error(errorMessage);
+    }
+
+    return await res.json();
+  };
   return (
     <ProtectedRoutesContext.Provider
       value={{
@@ -463,6 +493,8 @@ export const ProtectedRoutesContextProvider = ({
         storeNotification,
         getNotification,
         updatePushTokenUser,
+        ParentInfo,
+        GetFilesFromServer,
       }}
     >
       {children}

@@ -8,22 +8,51 @@ import {
   Modal,
   ScrollView,
   ImageBackground,
+  Alert,
+  Linking,
 } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useProtectedRoutesApi } from "@/libraries/API/protected/protectedRoutes";
+import { useQuery } from "@tanstack/react-query";
+import { API_URL } from "@/libraries/API/config/config";
 
 const InfantDetails = ({ infant, percentage }: any) => {
+  const { GetFilesFromServer } = useProtectedRoutesApi();
   const [modalVisible, setModalVisible] = useState(false);
+  const [filesModalVisible, setFilesModalVisible] = useState(false);
+
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["files"],
+    queryFn: GetFilesFromServer,
+  });
+
+  // Filter files so that only the file with a name that matches the infant.id is returned
+  // For example, if the infant.id is "5ac26904-b922-4a19-b4f3-8de5b74cc652",
+  // we check for a file named "5ac26904-b922-4a19-b4f3-8de5b74cc652.pdf"
+  const filteredFiles = data?.files.filter(
+    (file: string) => file === `${infant.id}.pdf`
+  );
+
+  // Dummy download function - for now, it just shows an alert.
+  const handleDownload = () => {
+    // Construct the download URL
+    const downloadUrl = `${API_URL}/admin/download/${infant.id}.pdf`;
+    // Use Linking to open the URL which should trigger the file download
+    Linking.openURL(downloadUrl).catch((err) =>
+      console.error("Failed to open URL: ", err)
+    );
+  };
 
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../../../public/babybg.png")} // Adjust the path to match your folder structure
+        source={require("../../../../public/babybg.png")}
         style={{
-          width: "100%", // Full width of the screen
-          justifyContent: "center", // Center text vertically
-          alignItems: "center", // Center text horizontally
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
           paddingVertical: 50,
         }}
         resizeMode="cover"
@@ -106,12 +135,20 @@ const InfantDetails = ({ infant, percentage }: any) => {
           )}
         </View>
 
-        {/* Button to open modal */}
+        {/* Button to open full profile modal */}
         <TouchableOpacity
           style={styles.button}
           onPress={() => setModalVisible(true)}
         >
           <Text style={styles.buttonText}>View Full Profile</Text>
+        </TouchableOpacity>
+
+        {/* Button to open vaccination form/files modal */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => setFilesModalVisible(true)}
+        >
+          <Text style={styles.buttonText}>Check Vaccination Form</Text>
         </TouchableOpacity>
       </View>
 
@@ -145,11 +182,51 @@ const InfantDetails = ({ infant, percentage }: any) => {
                 Place of Birth: {infant?.place_of_birth}
               </Text>
             </ScrollView>
-
-            {/* Close button */}
+            {/* Close button for profile modal */}
             <TouchableOpacity
               style={styles.button}
               onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.buttonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal for vaccination form/files */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={filesModalVisible}
+        onRequestClose={() => setFilesModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <ScrollView>
+              <Text style={styles.modalTitle}>Vaccination Form</Text>
+              {filteredFiles && filteredFiles.length > 0 ? (
+                <>
+                  <Text style={styles.modalInfo}>
+                    Vaccine form is ready to download.
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.DLBtn}
+                    onPress={handleDownload}
+                  >
+                    <Text style={styles.buttonText}>Download</Text>
+                  </TouchableOpacity>
+                </>
+              ) : (
+                <Text style={styles.modalInfo}>
+                  Vaccine form is not ready for download. Please wait for admin
+                  to update.
+                </Text>
+              )}
+            </ScrollView>
+            {/* Close button for files modal */}
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setFilesModalVisible(false)}
             >
               <Text style={styles.buttonText}>Close</Text>
             </TouchableOpacity>
@@ -205,6 +282,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
   },
+  DLBtn: {
+    marginTop: 15,
+    backgroundColor: "rgb(255, 38, 0)",
+    padding: 10,
+    borderRadius: 8,
+    alignItems: "center",
+  },
   buttonText: {
     color: "#fff",
     fontSize: 16,
@@ -232,23 +316,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
-
   infoColumns: {
-    flexDirection: "row", // Align two columns side by side
-    marginBottom: 20, // Add spacing below the section
+    flexDirection: "row",
+    marginBottom: 20,
   },
   column: {
-    flex: 1, // Allow columns to take equal width
+    flex: 1,
     marginLeft: 5,
     marginTop: 5,
   },
   infoRow: {
-    flexDirection: "row", // Align icon and text horizontally
-    alignItems: "center", // Center align vertically
-    marginBottom: 3, // Add spacing between rows
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 3,
   },
   icon: {
-    marginRight: 10, // Add space between the icon and the text
+    marginRight: 10,
   },
   infoText: {
     fontSize: 12,
