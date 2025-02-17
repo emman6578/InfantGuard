@@ -1,12 +1,14 @@
 {
-  "/home/infant/page": "app/home/infant/page.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/auth/login/page": "app/auth/login/page.js",
-  "/page": "app/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/home/page": "app/home/page.js",
-  "/home/infant/details/page": "app/home/infant/details/page.js",
-  "/home/vaccine/page": "app/home/vaccine/page.js",
+  "/auth/authenticate/page": "app/auth/authenticate/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
   "/home/about/page": "app/home/about/page.js",
-  "/home/parent/page": "app/home/parent/page.js"
+  "/home/infant/details/page": "app/home/infant/details/page.js",
+  "/home/parent/page": "app/home/parent/page.js",
+  "/home/infant/page": "app/home/infant/page.js",
+  "/auth/page": "app/auth/page.js",
+  "/home/vaccine/page": "app/home/vaccine/page.js",
+  "/home/page": "app/home/page.js",
+  "/page": "app/page.js"
 }

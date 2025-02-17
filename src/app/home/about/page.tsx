@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import Sidebar from "@/components/sidebar";
 import VaccinePage from "./page1";
 import VaccinePage2 from "./page2";
@@ -14,12 +14,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 
 const MainVaccinePage = () => {
+  const SearchParamsHandler = () => {
+    const searchParams = useSearchParams();
+    const infantId = searchParams.get("infantId");
+    return infantId;
+  };
+  const infantId = SearchParamsHandler();
+
   const { infantDataDownload, UploadDocumentToInfant, getPushToken } =
     useProtectedRoutesApi();
 
   const queryClient = useQueryClient();
-  const searchParams = useSearchParams();
-  const infantId = searchParams.get("infantId");
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["infant-data"],

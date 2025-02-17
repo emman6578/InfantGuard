@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 const Auth = () => {
   return <div>Auth Page</div>;

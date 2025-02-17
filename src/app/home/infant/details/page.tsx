@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { Suspense, useCallback, useState } from "react";
 import Footer from "@/components/footer";
 import Sidebar from "@/components/sidebar";
 import { useProtectedRoutesApi } from "@/libraries/API/ProtectedRoute/secureRoutes";
@@ -234,115 +234,117 @@ export default function InfantDetails() {
   });
 
   return (
-    <div className="grid grid-cols-[250px_1fr] grid-rows-[1fr_auto] min-h-screen">
-      <Sidebar />
+    <Suspense>
+      <div className="grid grid-cols-[250px_1fr] grid-rows-[1fr_auto] min-h-screen">
+        <Sidebar />
 
-      <main className="p-8 sm:p-20 font-[family-name:var(--font-geist-sans)] flex flex-col gap-8 relative">
-        <div className="absolute top-8 right-8">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Vaccination Schedule
-          </button>
-          {isAllVaccinated && (
+        <main className="p-8 sm:p-20 font-[family-name:var(--font-geist-sans)] flex flex-col gap-8 relative">
+          <div className="absolute top-8 right-8">
             <button
-              onClick={() =>
-                router.push(`/home/about?infantId=${infantData.id}`)
-              }
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 ml-3"
+              onClick={() => setIsModalOpen(true)}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
-              Vaccine Form
+              Vaccination Schedule
             </button>
-          )}
-        </div>
-        <InformationCard title="Personal Information">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={infantData.image}
-                alt="Infant"
-                className="w-32 h-32 rounded-full object-cover mr-4"
-              />
-              <div>
-                <p className="text-xl font-semibold">{infantData.fullname}</p>
-                <p className="text-gray-600">{infantData.gender}</p>
+            {isAllVaccinated && (
+              <button
+                onClick={() =>
+                  router.push(`/home/about?infantId=${infantData.id}`)
+                }
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 ml-3"
+              >
+                Vaccine Form
+              </button>
+            )}
+          </div>
+          <InformationCard title="Personal Information">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={infantData.image}
+                  alt="Infant"
+                  className="w-32 h-32 rounded-full object-cover mr-4"
+                />
+                <div>
+                  <p className="text-xl font-semibold">{infantData.fullname}</p>
+                  <p className="text-gray-600">{infantData.gender}</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <p>
+                  <span className="font-semibold">Height:</span>{" "}
+                  {infantData.height} cm
+                </p>
+                <p>
+                  <span className="font-semibold">Weight:</span>{" "}
+                  {infantData.weight} kg
+                </p>
+                <p>
+                  <span className="font-semibold">Health Center:</span>{" "}
+                  {infantData.health_center}
+                </p>
+                <p>
+                  <span className="font-semibold">Family Number:</span>{" "}
+                  {infantData.family_no}
+                </p>
               </div>
             </div>
-            <div className="space-y-2">
-              <p>
-                <span className="font-semibold">Height:</span>{" "}
-                {infantData.height} cm
-              </p>
-              <p>
-                <span className="font-semibold">Weight:</span>{" "}
-                {infantData.weight} kg
-              </p>
-              <p>
-                <span className="font-semibold">Health Center:</span>{" "}
-                {infantData.health_center}
-              </p>
-              <p>
-                <span className="font-semibold">Family Number:</span>{" "}
-                {infantData.family_no}
-              </p>
+          </InformationCard>
+          <InformationCard title="Parent Information">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p>
+                  <span className="font-semibold">Mothers Name:</span>{" "}
+                  {infantData.mothers_name}
+                </p>
+                <p>
+                  <span className="font-semibold">Fathers Name:</span>{" "}
+                  {infantData.fathers_name}
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span className="font-semibold">Parent Email:</span>{" "}
+                  {parent?.auth?.email}
+                </p>
+              </div>
             </div>
-          </div>
-        </InformationCard>
-        <InformationCard title="Parent Information">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p>
-                <span className="font-semibold">Mothers Name:</span>{" "}
-                {infantData.mothers_name}
-              </p>
-              <p>
-                <span className="font-semibold">Fathers Name:</span>{" "}
-                {infantData.fathers_name}
-              </p>
-            </div>
-            <div>
-              <p>
-                <span className="font-semibold">Parent Email:</span>{" "}
-                {parent?.auth?.email}
-              </p>
-            </div>
-          </div>
-        </InformationCard>
-        <InformationCard title="Address">
-          <p>
-            {address?.purok}, {address?.baranggay}, {address?.municipality},{" "}
-            {address?.province}
-          </p>
-        </InformationCard>
-        <InformationCard title="Birthday Details">
-          <p>
-            {getMonthName(birthday?.month)} {birthday?.day}, {birthday?.year}
-          </p>
-          <p className="mt-2">
-            <span className="font-semibold">Place of Birth:</span>{" "}
-            {infantData.place_of_birth}
-          </p>
-        </InformationCard>
-        <VaccineChart data={chartData} />
-        <PredictiveAnalysis infantData={infantData} />
-        {!isLoading && !isError && infantData && (
-          <>
-            {/* Other components or information cards */}
-            <InfantDoseTimingAnalysis infantData={infantData} />
-          </>
-        )}
-        <VaccinationModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          schedules={sortedVaccinationSchedule}
-          handleUpdate={handleUpdate}
-          handleNotify={handleNotify}
-        />
-      </main>
+          </InformationCard>
+          <InformationCard title="Address">
+            <p>
+              {address?.purok}, {address?.baranggay}, {address?.municipality},{" "}
+              {address?.province}
+            </p>
+          </InformationCard>
+          <InformationCard title="Birthday Details">
+            <p>
+              {getMonthName(birthday?.month)} {birthday?.day}, {birthday?.year}
+            </p>
+            <p className="mt-2">
+              <span className="font-semibold">Place of Birth:</span>{" "}
+              {infantData.place_of_birth}
+            </p>
+          </InformationCard>
+          <VaccineChart data={chartData} />
+          <PredictiveAnalysis infantData={infantData} />
+          {!isLoading && !isError && infantData && (
+            <>
+              {/* Other components or information cards */}
+              <InfantDoseTimingAnalysis infantData={infantData} />
+            </>
+          )}
+          <VaccinationModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            schedules={sortedVaccinationSchedule}
+            handleUpdate={handleUpdate}
+            handleNotify={handleNotify}
+          />
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </Suspense>
   );
 }

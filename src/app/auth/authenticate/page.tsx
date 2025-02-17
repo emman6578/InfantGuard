@@ -3,11 +3,15 @@
 import { useAuth } from "@/context/AuthContextProvider";
 import { authenticate } from "@/libraries/API/Auth/auth";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const Authenticate = () => {
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email");
+  const SearchParamsHandler = () => {
+    const searchParams = useSearchParams();
+    const email = searchParams.get("email");
+    return email;
+  };
+  const email = SearchParamsHandler();
   const [code, setCode] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
