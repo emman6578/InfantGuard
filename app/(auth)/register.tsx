@@ -11,6 +11,7 @@ import {
 import React, { useState } from "react";
 import { Stack, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { Picker } from "@react-native-picker/picker";
 import { register } from "@/libraries/API/auth/auth";
 
 const Register = () => {
@@ -21,8 +22,66 @@ const Register = () => {
   const [contact_number, setContact_number] = useState("");
   const [purok, setPurok] = useState("");
   const [baranggay, setBaranggay] = useState("");
-  const [municipality, setMunicipality] = useState("");
-  const [province, setProvince] = useState("");
+  const municipality = "Ligao City";
+  const province = "Albay";
+
+  const baranggayOptions = [
+    "AMTIC",
+    "BAGUMBAYAN",
+    "ABELLA",
+    "CABARIAN",
+    "BALIGANG",
+    "BAY",
+    "ALLANG",
+    "CATBURAWAN",
+    "BARAYONG",
+    "BINATAGAN",
+    "BACONG",
+    "MAONON",
+    "BASAG",
+    "BOBONSURAN",
+    "BALANAC",
+    "BATANG",
+    "BONGA",
+    "BUSAC",
+    "BINANOWAN",
+    "CALZADA",
+    "CULLIAT",
+    "BUSAY",
+    "CAVASI",
+    "FRANCIA",
+    "HERRERA",
+    "DUNAO",
+    "MACALIDONG",
+    "MAHABA",
+    "GUILID",
+    "MALAMA",
+    "NABONTON",
+    "LAYON",
+    "OMA-OMA",
+    "NASISI",
+    "PANDAN",
+    "PALAPAS",
+    "PAULOG",
+    "RANAO-RANAO",
+    "PAULBA",
+    "PINIT",
+    "STA. CRUZ",
+    "PINAMANIQUIAN",
+    "TAMBO",
+    "TAGPO",
+    "SAN VICENTE",
+    "TINAGO",
+    "TANDARURA",
+    "TINAMPO",
+    "TASTAS",
+    "TOMOLIN",
+    "TIONGSON",
+    "TUBURAN",
+    "TULA-TULA GRANDE",
+    "TULA-TULA PEQUEÑO",
+    "TUPAZ",
+  ];
 
   const onRegister = async () => {
     try {
@@ -88,28 +147,34 @@ const Register = () => {
           style={styles.input}
         />
 
-        <TextInput
-          placeholder="Baranggay"
-          placeholderTextColor="#94a3b8"
-          value={baranggay}
-          onChangeText={setBaranggay}
-          style={styles.input}
-        />
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={baranggay}
+            onValueChange={(itemValue) => setBaranggay(itemValue)}
+            style={styles.picker}
+            dropdownIconColor="#64748b"
+          >
+            <Picker.Item label="Select Baranggay" value="" />
+            {baranggayOptions.map((option) => (
+              <Picker.Item key={option} label={option} value={option} />
+            ))}
+          </Picker>
+        </View>
 
         <TextInput
           placeholder="Municipality"
           placeholderTextColor="#94a3b8"
           value={municipality}
-          onChangeText={setMunicipality}
-          style={styles.input}
+          style={[styles.input, styles.disabledInput]}
+          editable={false}
         />
 
         <TextInput
           placeholder="Province"
           placeholderTextColor="#94a3b8"
           value={province}
-          onChangeText={setProvince}
-          style={styles.input}
+          style={[styles.input, styles.disabledInput]}
+          editable={false}
         />
 
         <Pressable
@@ -197,6 +262,31 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "600",
+  },
+  pickerContainer: {
+    width: "100%",
+    height: 56,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    borderRadius: 12,
+    marginBottom: 16,
+    backgroundColor: "white",
+    overflow: "hidden",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  picker: {
+    width: "100%",
+    height: "100%",
+    color: "#1a365d",
+  },
+  disabledInput: {
+    backgroundColor: "#f1f5f9",
+    color: "#64748b",
   },
 });
 

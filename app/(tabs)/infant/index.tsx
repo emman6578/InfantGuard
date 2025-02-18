@@ -12,9 +12,33 @@ import {
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import CustomProgressBar from "./Components/CustomProgressBar";
+import { useEffect, useState } from "react";
+import * as Notifications from "expo-notifications";
 
 export default function Index() {
   const { GetTotalPercentageProgressVaccine } = useProtectedRoutesApi();
+
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  useEffect(() => {
+    // Listener for notifications received while the app is in the foreground
+    const foregroundSubscription =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotificationCount((prevCount) => prevCount + 1);
+      });
+
+    // Listener for notifications received when the app is in the background or closed
+    const responseSubscription =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        setNotificationCount((prevCount) => prevCount + 1);
+      });
+
+    // Cleanup listeners on unmount
+    return () => {
+      foregroundSubscription.remove();
+      responseSubscription.remove();
+    };
+  }, []);
 
   const {
     data: percentage,
@@ -56,6 +80,10 @@ export default function Index() {
           source={require("../../../public/app-logo.jpeg")}
           style={styles.logoImg}
         />
+
+        <View>
+          <Text style={styles.title}>Infant Guard</Text>
+        </View>
         <View style={styles.headerIcons}>
           <TouchableOpacity style={styles.iconButton} onPress={handlePressAdd}>
             <Feather name="user-plus" size={20} color="black" />
@@ -66,6 +94,19 @@ export default function Index() {
               router.push("/infant/notifications");
             }}
           >
+            <Text
+              style={{
+                position: "absolute",
+                left: 30,
+                padding: 3,
+                backgroundColor: "red",
+                borderRadius: 50,
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              {notificationCount}
+            </Text>
             <FontAwesome6 name="bell" size={20} color="black" />
           </TouchableOpacity>
         </View>
@@ -149,6 +190,14 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#1e90ff", // Blue color
+    textShadowColor: "rgba(0, 0, 0, 0.3)", // Black shadow with opacity
+    textShadowOffset: { width: 1, height: 1 }, // Shadow offset
+    textShadowRadius: 2, // Shadow radius
+  },
   logo: {
     fontSize: 24,
     fontWeight: "bold",

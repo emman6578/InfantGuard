@@ -161,30 +161,6 @@ async function registerForPushNotificationsAsync() {
   return token;
 }
 
-// export async function schedulePushNotification() {
-//   await Notifications.scheduleNotificationAsync({
-//     content: {
-//       title: "You've got mail! 📬",
-//       body: "Here is the notification body",
-//       data: { data: "goes here", test: { test1: "more data" } },
-//     },
-//     trigger: {
-//       type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-//       seconds: 2,
-//       repeats: false,
-//     },
-//   });
-// }
-
-// async function sendPushNotification(expoPushToken: string) {
-//   const message = {
-//     to: expoPushToken,
-//     sound: "default",
-//     title: "Original Title",
-//     body: "And here is the body!",
-//     data: { someData: "goes here" },
-//   };
-
 //   await fetch("https://exp.host/--/api/v2/push/send", {
 //     method: "POST",
 //     headers: {

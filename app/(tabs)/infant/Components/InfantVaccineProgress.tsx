@@ -76,38 +76,6 @@ const InfantVaccineProgress = ({ vaccineProgress }: any) => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
-
-      {vaccineProgress[0].Vaccination_Schedule[0]?.Vaccination.length > 0 ? (
-        <TouchableOpacity
-          style={{
-            padding: 12,
-            backgroundColor: "white",
-            borderRadius: 20,
-            width: "70%",
-            alignSelf: "center",
-            shadowColor: "#000", // Shadow color
-            shadowOpacity: 0.15, // Slightly lower opacity for a softer look
-            shadowRadius: 5, // Larger radius for an even shadow spread
-            elevation: 5, // Higher elevation for Android shadow
-            marginTop: 20,
-          }}
-          onPress={() => {
-            router.push("/infant/downloadVaccineProgress");
-          }}
-        >
-          <Text
-            style={{
-              textAlign: "center",
-              color: "black", // Text color for contrast with white background
-              fontWeight: "700",
-            }}
-          >
-            Download Vaccine Progress
-          </Text>
-        </TouchableOpacity>
-      ) : (
-        <View></View>
-      )}
     </View>
   );
 };

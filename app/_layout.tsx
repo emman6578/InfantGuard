@@ -25,8 +25,6 @@ export default function RootLayout() {
 }
 
 //TODO:
-//2. Redesign in [id].tsx infant InfantProgress component the modal
 //3. Setting Page of parent
 //4. The parent can edit infant's details see: Figma prototype
 //5. Articles on each vaccine
-//6. Download the infant;s vaccine progress see: Figma prtotype for design

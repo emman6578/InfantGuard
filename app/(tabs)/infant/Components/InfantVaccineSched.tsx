@@ -11,12 +11,11 @@ const InfantVaccineSched = ({ vaccineSchedule, id }: any) => {
   const { mutate: createVaccineSchedule } = useMutation({
     mutationFn: () => CreateVaccineSchedule(id as string),
     onSuccess: () => {
-      Alert.alert("Success", "Vaccine schedule created successfully!");
       queryClient.invalidateQueries({ queryKey: ["schedule", id] });
       queryClient.invalidateQueries({ queryKey: ["percentage"] });
     },
     onError: (error: any) => {
-      Alert.alert("Error", error.message || "Failed to create schedule.");
+      <></>;
     },
   });
 

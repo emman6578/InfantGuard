@@ -1,5 +1,4 @@
 import { useProtectedRoutesApi } from "@/libraries/API/protected/protectedRoutes";
-import { getNotifToken } from "@/libraries/Secure Store/expoSecureStore";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import {
@@ -13,6 +12,7 @@ import {
   Alert,
 } from "react-native";
 import * as Notifications from "expo-notifications";
+import { Stack } from "expo-router";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -63,6 +63,7 @@ const Schedule = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <Stack.Screen options={{ title: "Vaccine Schedule" }} />
       <Text style={styles.title}>Next Vaccine Due</Text>
 
       <ScrollView

@@ -35,6 +35,9 @@ interface ProtectedRoutesType {
   updatePushTokenUser: (expoPushToken: string) => Promise<any>;
   ParentInfo: () => Promise<any>;
   GetFilesFromServer: () => Promise<any>;
+  UploadParentProfileImage: (id: string, imageUri: string) => Promise<any>;
+  updateInfant: (data: any, id: string) => Promise<any>;
+  updateParent: (data: any, id: string) => Promise<any>;
 }
 
 const ProtectedRoutesContext = createContext<ProtectedRoutesType | undefined>(
@@ -192,7 +195,7 @@ export const ProtectedRoutesContextProvider = ({
 
       return await res.json();
     } catch (error) {
-      console.error("Error Creating Vaccine Schedule:", error);
+      // console.error("Error Creating Vaccine Schedule:", error);
       throw error;
     }
   };
@@ -477,6 +480,81 @@ export const ProtectedRoutesContextProvider = ({
 
     return await res.json();
   };
+
+  const UploadParentProfileImage = async (id: string, imageUri: string) => {
+    const formData = new FormData();
+    formData.append("image", {
+      uri: imageUri,
+      name: imageUri?.split("/").pop(),
+      type: "image/jpeg",
+    } as any);
+
+    try {
+      const res = await fetch(`${API_URL}/parent/upload-img-parent/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const responseBody = await res.json();
+        throw new Error(responseBody?.message);
+      }
+
+      return await res.json();
+    } catch (error) {
+      console.error("Error Creating Infant details:", error);
+      throw error;
+    }
+  };
+
+  const updateInfant = async (data: any, id: string) => {
+    const res = await fetch(`${API_URL}/parent/infant-update/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      let errorMessage = "Failed to update parent";
+      const responseBody = await res.json();
+      if (responseBody && responseBody.message) {
+        errorMessage = responseBody.message;
+      }
+      throw new Error(errorMessage);
+    }
+
+    return await res.json();
+  };
+
+  const updateParent = async (data: any, id: string) => {
+    const res = await fetch(`${API_URL}/parent/parent-update/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      let errorMessage = "Failed to update parent";
+      const responseBody = await res.json();
+      if (responseBody && responseBody.message) {
+        errorMessage = responseBody.message;
+      }
+      throw new Error(errorMessage);
+    }
+
+    return await res.json();
+  };
+
   return (
     <ProtectedRoutesContext.Provider
       value={{
@@ -495,6 +573,9 @@ export const ProtectedRoutesContextProvider = ({
         updatePushTokenUser,
         ParentInfo,
         GetFilesFromServer,
+        UploadParentProfileImage,
+        updateParent,
+        updateInfant,
       }}
     >
       {children}
