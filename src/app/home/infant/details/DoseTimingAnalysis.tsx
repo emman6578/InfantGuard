@@ -36,7 +36,7 @@ const DoseTimingAnalysis: React.FC<DoseTimingAnalysisProps> = ({
 
   const schedules = infantData.Vaccination_Schedule;
 
-  let totalDoses = 0;
+  const totalDoses = 0;
   let earlyCount = 0;
   let onTimeCount = 0;
   let lateCount = 0;
