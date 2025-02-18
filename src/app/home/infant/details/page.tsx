@@ -184,6 +184,7 @@ export default function InfantDetails() {
         body: `was scheduled for: ${body}`,
         data: "Vaccine Reminder",
       });
+      alert("Notification sent...");
     } catch (error) {
       console.error("handleNotify: Error sending notification:", error);
     }

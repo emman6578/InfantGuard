@@ -172,6 +172,18 @@ const AddInfantModal = () => {
     }
   };
 
+  // Birthday future-date validation:
+  const birthdayWarning = (() => {
+    if (month && day && year) {
+      const inputDate = new Date(Number(year), Number(month) - 1, Number(day));
+      const today = new Date();
+      if (inputDate > today) {
+        return "Birthdate cannot be in the future";
+      }
+    }
+    return "";
+  })();
+
   // Create a mutation using TanStack Query's useMutation hook
   const createInfantMutation = useMutation({
     mutationFn: (newInfant: {
@@ -262,7 +274,8 @@ const AddInfantModal = () => {
       !family_no && touched.family_no ? "Family Number is required" : "",
   };
 
-  // Overall form validity: every required field is nonempty and contact number is exactly 11 digits.
+  // Overall form validity: every required field is nonempty, the contact number is exactly 11 digits,
+  // and the birthday is not in the future.
   const isFormValid =
     fullname &&
     month &&
@@ -278,7 +291,8 @@ const AddInfantModal = () => {
     fathers_name &&
     contact_num.length === 11 &&
     health_center &&
-    family_no;
+    family_no &&
+    !birthdayWarning;
 
   // Handle form submission by calling the mutation
   const handleSave = () => {
@@ -438,6 +452,11 @@ const AddInfantModal = () => {
                 )}
               </div>
             </div>
+            {/* Warning if the birthday is in the future */}
+            {(touched.month || touched.day || touched.year) &&
+              birthdayWarning && (
+                <p className="text-red-500 text-sm mt-1">{birthdayWarning}</p>
+              )}
 
             {/* Address details */}
             {/* Purok field as a dropdown with values 1-20 */}
