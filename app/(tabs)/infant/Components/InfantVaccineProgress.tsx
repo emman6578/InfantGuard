@@ -1,18 +1,5 @@
-import { useProtectedRoutesApi } from "@/libraries/API/protected/protectedRoutes";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  TouchableOpacity,
-  Alert,
-  Modal,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import { router } from "expo-router";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 import CircularProgressBar from "./CustomCircularBar";
 import VaccineProgressModal from "../modal/vaccine-progress-modal";
 

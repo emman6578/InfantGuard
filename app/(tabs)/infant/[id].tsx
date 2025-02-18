@@ -1,9 +1,9 @@
 // OneInfant.tsx
 
 import { useProtectedRoutesApi } from "@/libraries/API/protected/protectedRoutes";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -11,6 +11,7 @@ import {
   ScrollView,
   SafeAreaView,
   RefreshControl,
+  Alert,
 } from "react-native";
 import InfantDetails from "./Components/InfantDetails";
 import InfantVaccineProgress from "./Components/InfantVaccineProgress";
@@ -18,39 +19,75 @@ import InfantVaccineSched from "./Components/InfantVaccineSched";
 
 const OneInfant = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const { OneInfant, VaccineSchedule, VaccineProgress } =
-    useProtectedRoutesApi();
-  const { id, totalPercentage } = useLocalSearchParams();
 
-  // Query for infant details
+  const {
+    OneInfant,
+    VaccineSchedule,
+    VaccineProgress,
+    CreateVaccineProgress,
+    CreateVaccineSchedule,
+  } = useProtectedRoutesApi();
+  const { id, totalPercentage } = useLocalSearchParams();
+  const queryClient = useQueryClient();
+
+  // Fetch infant details
   const {
     data: infantData,
     isLoading: isInfantLoading,
+    error: infantError,
     refetch: refetchInfant,
   } = useQuery({
     queryKey: ["infant", id],
     queryFn: () => OneInfant(id as string),
   });
 
-  // Query for vaccine schedule
+  // Fetch vaccine schedule
   const {
     data: vaccineData,
     isLoading: isVaccineLoading,
+    error: vaccineError,
     refetch: refetchVaccine,
   } = useQuery({
     queryKey: ["schedule", id],
     queryFn: () => VaccineSchedule(id as string),
   });
 
-  // Query for vaccine progress
   const {
     data: vaccineProgressData,
     isLoading: isVaccineProgressLoading,
+    error: vaccineProgressError,
     refetch: refetchVaccineProgress,
   } = useQuery({
     queryKey: ["progress", id],
     queryFn: () => VaccineProgress(id as string),
   });
+
+  // Mutation for creating a vaccine progress
+  const { mutate: createVaccineProgress } = useMutation({
+    mutationFn: () => CreateVaccineProgress(id as string),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["progress", id] });
+      queryClient.invalidateQueries({ queryKey: ["percentage"] });
+    },
+    onError: (error: any) => {},
+  });
+
+  // Mutation for creating a vaccine schedule
+  const { mutate: createVaccineSchedule } = useMutation({
+    mutationFn: () => CreateVaccineSchedule(id as string),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["schedule", id] });
+      queryClient.invalidateQueries({ queryKey: ["percentage"] });
+      // Trigger progress creation after schedule is created
+      createVaccineProgress();
+    },
+    onError: (error: any) => {},
+  });
+
+  // Automatically create schedule and progress on mount if needed
+  useEffect(() => {
+    createVaccineSchedule();
+  }, []);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -59,6 +96,12 @@ const OneInfant = () => {
       refetchVaccine(),
       refetchVaccineProgress(),
     ]);
+    queryClient.invalidateQueries({ queryKey: ["infant", id] });
+    queryClient.invalidateQueries({ queryKey: ["schedule", id] });
+    queryClient.invalidateQueries({ queryKey: ["progress", id] });
+    queryClient.invalidateQueries({ queryKey: ["percentage"] });
+    queryClient.invalidateQueries({ queryKey: ["all_schedule"] });
+    queryClient.invalidateQueries({ queryKey: ["files"] });
     setIsRefreshing(false);
   };
 
@@ -66,6 +109,14 @@ const OneInfant = () => {
     return (
       <View style={styles.center}>
         <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (infantError || vaccineError || vaccineProgressError) {
+    return (
+      <View style={styles.center}>
+        <Text>Error: {infantError?.message || vaccineError?.message}</Text>
       </View>
     );
   }
@@ -84,7 +135,6 @@ const OneInfant = () => {
         }
       >
         <Stack.Screen options={{ headerShown: false }} />
-        {/* InfantDetails now includes the edit functionality */}
         <InfantDetails infant={infant} percentage={totalPercentage} />
         <InfantVaccineProgress
           vaccineProgress={vaccineProgress}

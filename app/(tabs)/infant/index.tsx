@@ -92,21 +92,24 @@ export default function Index() {
             style={styles.iconButton}
             onPress={() => {
               router.push("/infant/notifications");
+              setNotificationCount(0);
             }}
           >
-            <Text
-              style={{
-                position: "absolute",
-                left: 30,
-                padding: 3,
-                backgroundColor: "red",
-                borderRadius: 50,
-                color: "white",
-                fontWeight: "bold",
-              }}
-            >
-              {notificationCount}
-            </Text>
+            {notificationCount > 0 && (
+              <Text
+                style={{
+                  position: "absolute",
+                  left: 30,
+                  padding: 3,
+                  backgroundColor: "red",
+                  borderRadius: 50,
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+              >
+                {notificationCount}
+              </Text>
+            )}
             <FontAwesome6 name="bell" size={20} color="black" />
           </TouchableOpacity>
         </View>

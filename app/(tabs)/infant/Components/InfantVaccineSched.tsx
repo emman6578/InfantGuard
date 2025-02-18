@@ -1,24 +1,7 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useProtectedRoutesApi } from "@/libraries/API/protected/protectedRoutes";
 
 const InfantVaccineSched = ({ vaccineSchedule, id }: any) => {
-  const { CreateVaccineSchedule } = useProtectedRoutesApi();
-  const queryClient = useQueryClient(); // Initialize queryClient for query invalidation
-
-  // Mutation for creating a vaccine schedule
-  const { mutate: createVaccineSchedule } = useMutation({
-    mutationFn: () => CreateVaccineSchedule(id as string),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["schedule", id] });
-      queryClient.invalidateQueries({ queryKey: ["percentage"] });
-    },
-    onError: (error: any) => {
-      <></>;
-    },
-  });
-
   return (
     <View style={styles.card}>
       <Text style={styles.sectionTitle}>Vaccine Schedule</Text>
@@ -79,17 +62,6 @@ const InfantVaccineSched = ({ vaccineSchedule, id }: any) => {
         // No schedule found
         <View style={styles.noScheduleContainer}>
           <Text style={styles.noScheduleText}>No vaccine schedule found.</Text>
-          <TouchableOpacity
-            style={{
-              padding: 20,
-              backgroundColor: "lightblue",
-              marginTop: 10,
-              borderRadius: 20,
-            }}
-            onPress={() => createVaccineSchedule()}
-          >
-            <Text style={{ fontWeight: "bold" }}>Create Schedule</Text>
-          </TouchableOpacity>
         </View>
       )}
     </View>

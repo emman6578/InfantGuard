@@ -12,7 +12,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LinearGradient } from "expo-linear-gradient";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
 import { useProtectedRoutesApi } from "@/libraries/API/protected/protectedRoutes";
 
@@ -20,6 +20,8 @@ export default function AddChild() {
   const { CreateChildInfo, UploadChildProfileImage, ParentInfo } =
     useProtectedRoutesApi();
   const queryClient = useQueryClient();
+
+  const router = useRouter();
 
   const { data } = useQuery({
     queryKey: ["parent"],
@@ -114,6 +116,20 @@ export default function AddChild() {
       return;
     }
 
+    // Create a date object from the inputs (note: month is zero-indexed)
+    const birthdayDate = new Date(
+      parseInt(year, 10),
+      parseInt(month, 10) - 1,
+      parseInt(day, 10)
+    );
+    const currentDate = new Date();
+
+    // Check if the birthday is in the future
+    if (birthdayDate > currentDate) {
+      Alert.alert("Error", "Birthday cannot be a future date");
+      return;
+    }
+
     const dataToSubmit = {
       fullname: fullname,
       birthday: {
@@ -141,6 +157,7 @@ export default function AddChild() {
             imageUrl: image,
           });
         }
+        router.replace("/");
       },
     });
   };
@@ -219,7 +236,7 @@ export default function AddChild() {
           </View>
         </View>
 
-        {/* Year Picker: 1980-2025 */}
+        {/* Year Picker: 2000-2025 */}
         <View style={styles.input}>
           <Picker
             selectedValue={year}
@@ -391,7 +408,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     justifyContent: "center",
   },
-  // A style for half-width inputs in a row
   halfInput: {
     flex: 1,
     height: 56,

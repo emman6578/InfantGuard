@@ -26,6 +26,9 @@ export default function NotificationProvider({ children }: any) {
   const notificationListener = useRef<Notifications.EventSubscription>();
   const responseListener = useRef<Notifications.EventSubscription>();
 
+  const { storeNotification, updatePushTokenUser } = useProtectedRoutesApi();
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     registerForPushNotificationsAsync().then(
       (token) => token && setExpoPushToken(token)
@@ -56,12 +59,23 @@ export default function NotificationProvider({ children }: any) {
     };
   }, []);
 
-  const title = notification?.request.content.title;
-  const body = notification?.request.content.body;
-  const data = notification?.request.content.data;
+  const updateMutationPushToken = useMutation({
+    mutationFn: async ({ expoPushToken }: { expoPushToken: string }) => {
+      return updatePushTokenUser(expoPushToken);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+    onError: (error: any) => {
+      // console.log(error);
+    },
+  });
 
-  const { storeNotification, updatePushTokenUser } = useProtectedRoutesApi();
-  const queryClient = useQueryClient();
+  useEffect(() => {
+    if (expoPushToken) {
+      updateMutationPushToken.mutate({ expoPushToken });
+    }
+  }, [expoPushToken]);
 
   const updateMutation = useMutation({
     mutationFn: async ({
@@ -79,24 +93,16 @@ export default function NotificationProvider({ children }: any) {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },
     onError: (error: any) => {
-      Alert.alert(
-        "Error",
-        error.message || "Failed to update vaccine progress."
-      );
+      // Alert.alert(
+      //   "Error",
+      //   error.message || "Failed to update vaccine progress."
+      // );
     },
   });
 
-  const updateMutationPushToken = useMutation({
-    mutationFn: async ({ expoPushToken }: { expoPushToken: string }) => {
-      return updatePushTokenUser(expoPushToken);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
-    },
-    onError: (error: any) => {
-      console.log(error);
-    },
-  });
+  const title = notification?.request.content.title;
+  const body = notification?.request.content.body;
+  const data = notification?.request.content.data;
 
   useEffect(() => {
     if (notification) {
@@ -107,10 +113,6 @@ export default function NotificationProvider({ children }: any) {
       });
     }
   }, [notification]);
-
-  useEffect(() => {
-    updateMutationPushToken.mutate({ expoPushToken });
-  }, [expoPushToken]);
 
   return children;
 }
