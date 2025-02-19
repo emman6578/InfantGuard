@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   RefreshControl,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import InfantDetails from "./Components/InfantDetails";
 import InfantVaccineProgress from "./Components/InfantVaccineProgress";
@@ -63,7 +64,7 @@ const OneInfant = () => {
   });
 
   // Mutation for creating a vaccine progress
-  const { mutate: createVaccineProgress } = useMutation({
+  const createVaccineProgressMutation = useMutation({
     mutationFn: () => CreateVaccineProgress(id as string),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["progress", id] });
@@ -73,20 +74,20 @@ const OneInfant = () => {
   });
 
   // Mutation for creating a vaccine schedule
-  const { mutate: createVaccineSchedule } = useMutation({
+  const createVaccineScheduleMutation = useMutation({
     mutationFn: () => CreateVaccineSchedule(id as string),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["schedule", id] });
       queryClient.invalidateQueries({ queryKey: ["percentage"] });
       // Trigger progress creation after schedule is created
-      createVaccineProgress();
+      createVaccineProgressMutation.mutate();
     },
     onError: (error: any) => {},
   });
 
   // Automatically create schedule and progress on mount if needed
   useEffect(() => {
-    createVaccineSchedule();
+    createVaccineScheduleMutation.mutate();
   }, []);
 
   const handleRefresh = async () => {
@@ -96,6 +97,7 @@ const OneInfant = () => {
       refetchVaccine(),
       refetchVaccineProgress(),
     ]);
+    createVaccineProgressMutation.mutate();
     queryClient.invalidateQueries({ queryKey: ["infant", id] });
     queryClient.invalidateQueries({ queryKey: ["schedule", id] });
     queryClient.invalidateQueries({ queryKey: ["progress", id] });
@@ -105,10 +107,19 @@ const OneInfant = () => {
     setIsRefreshing(false);
   };
 
-  if (isInfantLoading || isVaccineLoading || isVaccineProgressLoading) {
+  // Combine all loading states
+  const isLoading =
+    isInfantLoading ||
+    isVaccineLoading ||
+    isVaccineProgressLoading ||
+    createVaccineScheduleMutation.isPending ||
+    createVaccineProgressMutation.isPending;
+
+  if (isLoading) {
     return (
       <View style={styles.center}>
-        <Text>Loading...</Text>
+        <ActivityIndicator size="large" />
+        <Text>Creating Schedules and Calculating Progress</Text>
       </View>
     );
   }
