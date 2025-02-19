@@ -46,7 +46,14 @@ export default function NotificationProvider({ children }: any) {
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
+        const receivedNotification = response.notification;
+        if (receivedNotification) {
+          updateMutation.mutate({
+            title: receivedNotification.request.content.title || "No Title",
+            body: receivedNotification.request.content.body || "No Body",
+            data: JSON.stringify(receivedNotification.request.content.data),
+          });
+        }
       });
 
     return () => {
@@ -87,10 +94,11 @@ export default function NotificationProvider({ children }: any) {
       body: string;
       data: string;
     }) => {
-      return storeNotification(title, body, data);
+      await storeNotification(title, body, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      // Alert.alert("Success", "Notification Stored");
     },
     onError: (error: any) => {
       // Alert.alert(
