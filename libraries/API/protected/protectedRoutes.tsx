@@ -38,6 +38,9 @@ interface ProtectedRoutesType {
   UploadParentProfileImage: (id: string, imageUri: string) => Promise<any>;
   updateInfant: (data: any, id: string) => Promise<any>;
   updateParent: (data: any, id: string) => Promise<any>;
+  createMsg: (text: string) => Promise<any>;
+  readMsg: (conversationId: string) => Promise<any>;
+  loadConversation: () => Promise<any>;
 }
 
 const ProtectedRoutesContext = createContext<ProtectedRoutesType | undefined>(
@@ -555,6 +558,74 @@ export const ProtectedRoutesContextProvider = ({
     return await res.json();
   };
 
+  const createMsg = async (text: string) => {
+    const data = {
+      text,
+    };
+
+    const res = await fetch(`${API_URL}/msg`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      let errorMessage = "Failed to send text";
+      const responseBody = await res.json();
+      if (responseBody && responseBody.message) {
+        errorMessage = responseBody.message;
+      }
+      throw new Error(errorMessage);
+    }
+
+    return await res.json();
+  };
+
+  const readMsg = async (conversationId: string) => {
+    const res = await fetch(`${API_URL}/msg/${conversationId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    if (!res.ok) {
+      let errorMessage = "Failed to read message";
+      const responseBody = await res.json();
+      if (responseBody && responseBody.message) {
+        errorMessage = responseBody.message;
+      }
+      throw new Error(errorMessage);
+    }
+
+    return await res.json();
+  };
+
+  const loadConversation = async () => {
+    const res = await fetch(`${API_URL}/msg`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    if (!res.ok) {
+      let errorMessage = "Failed to read message";
+      const responseBody = await res.json();
+      if (responseBody && responseBody.message) {
+        errorMessage = responseBody.message;
+      }
+      throw new Error(errorMessage);
+    }
+
+    return await res.json();
+  };
+
   return (
     <ProtectedRoutesContext.Provider
       value={{
@@ -576,6 +647,9 @@ export const ProtectedRoutesContextProvider = ({
         UploadParentProfileImage,
         updateParent,
         updateInfant,
+        createMsg,
+        readMsg,
+        loadConversation,
       }}
     >
       {children}

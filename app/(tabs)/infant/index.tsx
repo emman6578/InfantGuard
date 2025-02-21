@@ -14,9 +14,11 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import CustomProgressBar from "./Components/CustomProgressBar";
 import { useEffect, useState } from "react";
 import * as Notifications from "expo-notifications";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function Index() {
-  const { GetTotalPercentageProgressVaccine } = useProtectedRoutesApi();
+  const { GetTotalPercentageProgressVaccine, loadConversation } =
+    useProtectedRoutesApi();
 
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -82,12 +84,13 @@ export default function Index() {
         />
 
         <View>
-          <Text style={styles.title}>Infant Guard</Text>
+          <Text style={styles.title}>InfantGuard</Text>
         </View>
         <View style={styles.headerIcons}>
           <TouchableOpacity style={styles.iconButton} onPress={handlePressAdd}>
             <Feather name="user-plus" size={20} color="black" />
           </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.iconButton}
             onPress={() => {
@@ -111,6 +114,14 @@ export default function Index() {
               </Text>
             )}
             <FontAwesome6 name="bell" size={20} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => {
+              router.push("/infant/conversation");
+            }}
+          >
+            <MaterialIcons name="message" size={24} color="black" />
           </TouchableOpacity>
         </View>
       </View>
@@ -228,8 +239,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -250,7 +261,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   iconButton: {
-    marginHorizontal: 10,
+    marginHorizontal: 5,
     padding: 8,
     borderRadius: 50,
     backgroundColor: "#f0f0f0",
