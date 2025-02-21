@@ -38,14 +38,8 @@ const AddConversation = () => {
         value={text}
         onChangeText={setText}
       />
-      <Button
-        title="Send"
-        onPress={handleSend}
-        disabled={mutation.status === "loading"}
-      />
-      {mutation.status === "loading" && (
-        <Text style={styles.status}>Sending...</Text>
-      )}
+      <Button title="Send" onPress={handleSend} />
+
       {mutation.status === "error" && (
         <Text style={styles.error}>
           Error:{" "}
