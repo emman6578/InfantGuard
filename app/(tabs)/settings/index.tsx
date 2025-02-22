@@ -36,7 +36,6 @@ export default function Settings() {
     queryFn: () => ParentInfo(),
   });
 
-  // Handle successful data fetch with useEffect
   useEffect(() => {
     if (data) {
       setEditFullname(data.data.fullname);
@@ -129,12 +128,14 @@ export default function Settings() {
         />
         {/* Profile Section */}
         <View style={styles.profileCard}>
-          <Image
-            source={{
-              uri: parentData?.image || "https://via.placeholder.com/150",
-            }}
-            style={styles.profileImage}
-          />
+          {parentData?.image ? (
+            <Image
+              source={{ uri: parentData.image }}
+              style={styles.profileImage}
+            />
+          ) : (
+            <Text style={styles.noImageText}>No image available</Text>
+          )}
           <Text style={styles.name}>{parentData?.fullname}</Text>
           <Text style={styles.contact}>{parentData?.contact_number}</Text>
 
@@ -270,6 +271,12 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 60,
     marginBottom: 16,
+  },
+  noImageText: {
+    fontSize: 16,
+    color: "#64748b",
+    marginBottom: 16,
+    textAlign: "center",
   },
   name: {
     fontSize: 24,

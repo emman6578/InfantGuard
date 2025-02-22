@@ -17,7 +17,7 @@ import * as Notifications from "expo-notifications";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function Index() {
-  const { GetTotalPercentageProgressVaccine, loadConversation } =
+  const { GetTotalPercentageProgressVaccine, ParentInfo } =
     useProtectedRoutesApi();
 
   const [notificationCount, setNotificationCount] = useState(0);
@@ -52,6 +52,11 @@ export default function Index() {
     queryFn: GetTotalPercentageProgressVaccine,
   });
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["parent"],
+    queryFn: () => ParentInfo(),
+  });
+
   const handlePressAdd = () => {
     router.push("/infant/addChild");
   };
@@ -73,6 +78,7 @@ export default function Index() {
   }
 
   const infants = percentage?.data?.infants || [];
+  const parentData = data?.data;
 
   return (
     <>
@@ -128,7 +134,7 @@ export default function Index() {
 
       {/* Welcome Text */}
       <View style={styles.randomTextContainer}>
-        <Text style={styles.randomText}>Welcome</Text>
+        <Text style={styles.randomText}>Welcome {parentData?.fullname}</Text>
         <Text style={[styles.randomText, { fontSize: 16, fontWeight: "300" }]}>
           What we can do for you today?
         </Text>
@@ -276,7 +282,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   randomText: {
-    fontSize: 30,
+    fontSize: 25,
     color: "#333",
     fontWeight: "900",
     textAlign: "center",

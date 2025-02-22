@@ -11,7 +11,7 @@ import {
   Alert,
   Linking,
   TextInput,
-  ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -20,13 +20,16 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useProtectedRoutesApi } from "@/libraries/API/protected/protectedRoutes";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { API_URL } from "@/libraries/API/config/config";
+import * as ImagePicker from "expo-image-picker";
 
 const InfantDetails = ({ infant, percentage }: any) => {
   const queryClient = useQueryClient();
-  const { GetFilesFromServer, updateInfant } = useProtectedRoutesApi();
+  const { GetFilesFromServer, updateInfant, UploadChildProfileImage } =
+    useProtectedRoutesApi();
   const [profileModalVisible, setProfileModalVisible] = useState(false);
   const [filesModalVisible, setFilesModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [image, setImage] = useState("");
 
   // For downloading vaccination form
   const { data, isLoading: filesLoading } = useQuery({
@@ -45,6 +48,31 @@ const InfantDetails = ({ infant, percentage }: any) => {
       console.error("Failed to open URL: ", err)
     );
   };
+
+  // Image Picker handler
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const uploadMutation = useMutation({
+    mutationFn: (data: any) => UploadChildProfileImage(data.id, data.imageUrl),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["percentage"] });
+      Alert.alert("Success", "Image uploaded successfully!");
+    },
+    onError: (error: any) => {
+      Alert.alert("Error", error.message || "Failed to upload image");
+    },
+  });
 
   // -------------------- Edit Functionality --------------------
   // Form fields for editing (initialized when edit modal opens)
@@ -79,7 +107,12 @@ const InfantDetails = ({ infant, percentage }: any) => {
       queryClient.invalidateQueries({ queryKey: ["progress", infant.id] });
       Alert.alert("Success", "Infant details updated successfully.");
       setEditModalVisible(false);
-      // Optionally, you can trigger a refetch of the infant data here.
+      if (image) {
+        uploadMutation.mutate({
+          id: infant.id,
+          imageUrl: image,
+        });
+      }
     },
     onError: (error: any) => {
       Alert.alert("Error", error.message || "Failed to update infant details.");
@@ -297,7 +330,7 @@ const InfantDetails = ({ infant, percentage }: any) => {
           </View>
         </View>
       </Modal>
-
+      {/* ================================================================================================================================================= */}
       {/* Edit Profile Modal */}
       {editModalVisible && (
         <Modal
@@ -310,6 +343,8 @@ const InfantDetails = ({ infant, percentage }: any) => {
             <View style={styles.editModalContainer}>
               <View style={styles.modalHeader}>
                 <Text style={styles.editModalTitle}>Edit Infant Details</Text>
+                {/* Image Picker Section */}
+
                 <TouchableOpacity onPress={() => setEditModalVisible(false)}>
                   <Text style={styles.closeButton}>×</Text>
                 </TouchableOpacity>
@@ -392,6 +427,26 @@ const InfantDetails = ({ infant, percentage }: any) => {
                   />
                 </View>
 
+                <View style={{ alignItems: "center", marginVertical: 5 }}>
+                  <Pressable
+                    style={({ pressed }) => [
+                      styles.button,
+                      pressed && styles.buttonPressed,
+                    ]}
+                    onPress={pickImage}
+                  >
+                    <Text style={styles.buttonText}>
+                      {image ? "Change Image" : "Pick Image"}
+                    </Text>
+                  </Pressable>
+
+                  {image && (
+                    <Image
+                      source={{ uri: image }}
+                      style={styles.imagePreview}
+                    />
+                  )}
+                </View>
                 <View style={styles.modalButtonGroup}>
                   <TouchableOpacity
                     style={styles.cancelButton}
@@ -494,6 +549,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     alignItems: "center",
+    marginBottom: 5,
   },
   editButton: {
     backgroundColor: "#28a745",
@@ -636,6 +692,17 @@ const styles = StyleSheet.create({
   picker: {
     height: 50,
     width: "100%",
+  },
+  buttonPressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
+  },
+  imagePreview: {
+    width: 150,
+    height: 150,
+    borderRadius: 12,
+    marginBottom: 16,
+    resizeMode: "cover",
   },
 });
 

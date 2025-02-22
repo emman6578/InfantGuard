@@ -89,7 +89,7 @@ const Register = () => {
         fullname,
         email,
         contact_number,
-        address: { purok, baranggay, municipality, province },
+        address: { purok: `Purok ${purok}`, baranggay, municipality, province },
       });
       router.push({ pathname: "/landingPage", params: { email } });
       Alert.alert("Registration Successful");

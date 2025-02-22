@@ -263,6 +263,19 @@ export default function AddChild() {
           }
         />
 
+        {/* Gender Picker */}
+        <View style={styles.input}>
+          <Picker
+            selectedValue={gender}
+            onValueChange={(itemValue) => setGender(itemValue)}
+            style={styles.picker}
+          >
+            <Picker.Item label="Select Gender" value="" />
+            <Picker.Item label="Male" value="Male" />
+            <Picker.Item label="Female" value="Female" />
+          </Picker>
+        </View>
+
         {/* Height (cm) - Only numbers with up to 2 decimal places */}
         <TextInput
           style={styles.input}
@@ -276,19 +289,6 @@ export default function AddChild() {
           }}
           keyboardType="numeric"
         />
-
-        {/* Gender Picker */}
-        <View style={styles.input}>
-          <Picker
-            selectedValue={gender}
-            onValueChange={(itemValue) => setGender(itemValue)}
-            style={styles.picker}
-          >
-            <Picker.Item label="Select Gender" value="" />
-            <Picker.Item label="Male" value="Male" />
-            <Picker.Item label="Female" value="Female" />
-          </Picker>
-        </View>
 
         {/* Weight (kg) - Only numbers with up to 2 decimal places */}
         <TextInput
