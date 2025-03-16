@@ -21,21 +21,35 @@ export default function Index() {
     useProtectedRoutesApi();
 
   const [notificationCount, setNotificationCount] = useState(0);
+  const [notificationCountMsg, setNotificationCountMsg] = useState(0);
 
   useEffect(() => {
-    // Listener for notifications received while the app is in the foreground
     const foregroundSubscription =
       Notifications.addNotificationReceivedListener((notification) => {
-        setNotificationCount((prevCount) => prevCount + 1);
+        if (
+          !notification.request.content.title
+            ?.toLowerCase()
+            .includes("have one new message")
+        ) {
+          setNotificationCount((prevCount) => prevCount + 1);
+        } else {
+          setNotificationCountMsg((prevCount) => prevCount + 1);
+        }
       });
 
-    // Listener for notifications received when the app is in the background or closed
     const responseSubscription =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        setNotificationCount((prevCount) => prevCount + 1);
+        if (
+          !response.notification.request.content.title
+            ?.toLowerCase()
+            .includes("have one new message")
+        ) {
+          setNotificationCount((prevCount) => prevCount + 1);
+        } else {
+          setNotificationCountMsg((prevCount) => prevCount + 1);
+        }
       });
 
-    // Cleanup listeners on unmount
     return () => {
       foregroundSubscription.remove();
       responseSubscription.remove();
@@ -125,8 +139,24 @@ export default function Index() {
             style={styles.iconButton}
             onPress={() => {
               router.push("/infant/conversation");
+              setNotificationCountMsg(0);
             }}
           >
+            {notificationCountMsg > 0 && (
+              <Text
+                style={{
+                  position: "absolute",
+                  left: 30,
+                  padding: 3,
+                  backgroundColor: "red",
+                  borderRadius: 50,
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+              >
+                {notificationCountMsg}
+              </Text>
+            )}
             <MaterialIcons name="message" size={24} color="black" />
           </TouchableOpacity>
         </View>
