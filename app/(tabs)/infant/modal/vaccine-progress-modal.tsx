@@ -38,6 +38,7 @@ const VaccineProgressModal = ({
               <View>
                 <Text style={styles.modalTitle}>Vaccine Progress Details</Text>
                 {selectedVaccine.Vaccination_Schedule.map((schedule: any) => {
+                  console.log(schedule);
                   return (
                     <View key={schedule.id} style={styles.scheduleItem}>
                       {/* Only show First Dose if updated dose info and remark exist */}
@@ -45,9 +46,14 @@ const VaccineProgressModal = ({
                         schedule.remark_FirstDose && (
                           <View style={styles.doseContainer}>
                             <Text style={styles.info}>
+                              Predictive Date: {schedule.firstDose}
+                            </Text>
+                            <Text style={styles.info}>
                               First Dose (Updated):{" "}
-                              {formatDate(schedule.UpdateFirstDose)} (Remark:{" "}
-                              {schedule.remark_FirstDose})
+                              {formatDate(schedule.UpdateFirstDose)}
+                            </Text>
+                            <Text style={styles.info}>
+                              Remarks: {schedule.remark_FirstDose}
                             </Text>
                           </View>
                         )}
@@ -57,9 +63,14 @@ const VaccineProgressModal = ({
                         schedule.remark_SecondDose && (
                           <View style={styles.doseContainer}>
                             <Text style={styles.info}>
+                              Predictive Date: {schedule.secondDose}
+                            </Text>
+                            <Text style={styles.info}>
                               Second Dose (Updated):{" "}
-                              {formatDate(schedule.UpdateSecondDose)} (Remark:{" "}
-                              {schedule.remark_SecondDose})
+                              {formatDate(schedule.UpdateSecondDose)}
+                            </Text>
+                            <Text style={styles.info}>
+                              Remarks: {schedule.remark_SecondDose}
                             </Text>
                           </View>
                         )}
@@ -69,16 +80,25 @@ const VaccineProgressModal = ({
                         schedule.remark_ThirdDose && (
                           <View style={styles.doseContainer}>
                             <Text style={styles.info}>
+                              Predictive Date: {schedule.thirdDose}
+                            </Text>
+                            <Text style={styles.info}>
                               Third Dose (Updated):{" "}
-                              {formatDate(schedule.UpdateThirdDose)} (Remark:{" "}
-                              {schedule.remark_ThirdDose})
+                              {formatDate(schedule.UpdateThirdDose)}
+                            </Text>
+                            <Text style={styles.info}>
+                              Remarks: {schedule.remark_ThirdDose}
                             </Text>
                           </View>
                         )}
 
                       {/* Always show the progress information */}
                       <Text style={styles.info}>
-                        Progress: {schedule.Vaccination[0]?.percentage || 0}%
+                        {schedule.UpdateFirstDose ? (
+                          <></>
+                        ) : (
+                          <Text>Not yet updated by the Admin</Text>
+                        )}
                       </Text>
                     </View>
                   );
@@ -123,10 +143,10 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
   },
   doseContainer: {
-    flexDirection: "row",
-    alignItems: "center",
     marginBottom: 10,
     gap: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
   },
   updateButton: {
     paddingVertical: 5,

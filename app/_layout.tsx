@@ -23,8 +23,3 @@ export default function RootLayout() {
     </AuthContextProvider>
   );
 }
-
-//TODO:
-//3. Setting Page of parent
-//4. The parent can edit infant's details see: Figma prototype
-//5. Articles on each vaccine

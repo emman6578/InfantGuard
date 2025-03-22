@@ -230,14 +230,14 @@ const InfantDetails = ({ infant, percentage }: any) => {
 
         {/* Buttons */}
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, { backgroundColor: "#24956d" }]}
           onPress={() => setProfileModalVisible(true)}
         >
           <Text style={styles.buttonText}>View Full Profile</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, { backgroundColor: "#f18621" }]}
           onPress={() => setFilesModalVisible(true)}
         >
           <Text style={styles.buttonText}>Check Vaccination Form</Text>
@@ -552,11 +552,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   editButton: {
-    backgroundColor: "#28a745",
+    backgroundColor: "#cd513b",
   },
   DLBtn: {
     marginTop: 15,
-    backgroundColor: "rgb(255, 38, 0)",
+    backgroundColor: "#cd513b",
     padding: 10,
     borderRadius: 8,
     alignItems: "center",

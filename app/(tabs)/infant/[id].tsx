@@ -20,7 +20,6 @@ import InfantVaccineSched from "./Components/InfantVaccineSched";
 
 const OneInfant = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
-
   const {
     OneInfant,
     VaccineSchedule,
@@ -104,6 +103,7 @@ const OneInfant = () => {
     queryClient.invalidateQueries({ queryKey: ["percentage"] });
     queryClient.invalidateQueries({ queryKey: ["all_schedule"] });
     queryClient.invalidateQueries({ queryKey: ["files"] });
+    queryClient.invalidateQueries({ queryKey: ["percentage"] });
     setIsRefreshing(false);
   };
 
