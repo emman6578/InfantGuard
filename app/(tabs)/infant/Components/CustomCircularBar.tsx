@@ -6,8 +6,7 @@ type CircularProgressBarProps = {
   progress: number; // progress value between 0 and 100
   size: number; // size of the circular progress bar
   strokeWidth: number; // width of the circular progress stroke
-  color: string; // color of the progress stroke
-  backgroundColor: string; // background color of the circle
+  backgroundColor?: string; // background color of the circle
   label?: string; // Optional label to display inside the circle
 };
 
@@ -15,13 +14,22 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   progress,
   size,
   strokeWidth,
-  color,
-  backgroundColor,
+  backgroundColor = "lightgray",
   label,
 }) => {
+  // Determine color based on progress thresholds
+  let progressColor: string;
+  if (progress >= 100) {
+    progressColor = "green";
+  } else if (progress >= 50) {
+    progressColor = "yellow";
+  } else {
+    progressColor = "red";
+  }
+
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
-  const progressOffset = circumference - (progress / 100) * circumference; // Calculate the offset based on progress
+  const progressOffset = circumference - (progress / 100) * circumference;
 
   return (
     <View style={[styles.container, { width: size, height: size }]}>
@@ -41,7 +49,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke={color}
+          stroke={progressColor}
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
@@ -77,6 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+    marginTop: 4,
   },
 });
 
